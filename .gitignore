@@ -1,0 +1,3 @@
+# Project exclude paths
+/webpackage_api/target/
+/webpackage_app/target/
