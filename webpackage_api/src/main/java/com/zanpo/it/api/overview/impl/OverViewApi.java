@@ -1,9 +1,9 @@
 package com.zanpo.it.api.overview.impl;
 
 import com.zanpo.it.api.overview.IOverViewApi;
-import com.zanpo.it.app.overview.IOverViewApp;
+import com.zanpo.it.appapi.overview.IOverViewApp;
 import com.zanpo.it.dto.overview.SystemInfoOutputDto;
-import com.zanpo.it.utils.ResultSet;
+import com.zanpo.it.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +19,8 @@ public class OverViewApi implements IOverViewApi {
     @Autowired
     IOverViewApp overViewApp;
 
-    public ResultSet<SystemInfoOutputDto> getSystemInfo() {
+    public Result<SystemInfoOutputDto> getSystemInfo() {
         SystemInfoOutputDto systemInfo = overViewApp.getSystemInfo();
-        return ResultSet.success(systemInfo);
+        return Result.success(systemInfo);
     }
 }

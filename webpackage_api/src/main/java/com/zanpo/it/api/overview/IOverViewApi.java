@@ -1,7 +1,7 @@
 package com.zanpo.it.api.overview;
 
 import com.zanpo.it.dto.overview.SystemInfoOutputDto;
-import com.zanpo.it.utils.ResultSet;
+import com.zanpo.it.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +21,5 @@ public interface IOverViewApi {
 
     @ApiOperation("查询系统详细信息")
     @GetMapping("/overview/detail")
-    ResultSet<SystemInfoOutputDto> getSystemInfo();
+    Result<SystemInfoOutputDto> getSystemInfo();
 }

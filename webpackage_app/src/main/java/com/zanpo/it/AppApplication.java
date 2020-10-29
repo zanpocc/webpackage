@@ -14,6 +14,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 public class AppApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
+        // 日志显示高亮
+        System.setProperty("spring.output.ansi.enabled","ALWAYS");
         SpringApplication.run(AppApplication.class,args);
     }
 }

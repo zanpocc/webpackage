@@ -1,4 +1,4 @@
-package com.zanpo.it.app.overview;
+package com.zanpo.it.appapi.overview;
 
 import com.zanpo.it.dto.overview.SystemInfoOutputDto;
 
