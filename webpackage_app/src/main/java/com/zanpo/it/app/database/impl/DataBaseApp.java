@@ -2,13 +2,17 @@ package com.zanpo.it.app.database.impl;
 
 import com.zanpo.it.SpringUtils;
 import com.zanpo.it.appapi.database.IDataBaseApp;
-import com.zanpo.it.config.datasource.HikariDataSourceProxy;
+import com.zanpo.it.config.HikariDataSourceProxy;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
+import com.zanpo.it.repository.table.ITableRepository;
+import com.zanpo.it.repository.table.com.zanpo.it.aggr.TableAggr;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -23,6 +27,9 @@ import java.util.List;
 @Component
 @Slf4j
 public class DataBaseApp implements IDataBaseApp {
+
+    @Autowired
+    ITableRepository tableRepository;
 
     private DataSource initHikariDataSource(DataSourceInputDto dataSourceInputDto) throws Exception {
         String url = dataSourceInputDto.getUrl();
@@ -60,6 +67,8 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public List<DataSourceOutputDto> getDataSources() {
+        List<TableAggr> allTables = tableRepository.findAllTables();
+        log.info("{}",allTables);
         return null;
     }
 
@@ -73,14 +82,16 @@ public class DataBaseApp implements IDataBaseApp {
         // TODO:
         try {
             DataSource dataSource = initHikariDataSource(dataSourceInputDto);
-            if (dataSource != null){
-                return new DataSourceOutputDto();
+            if (dataSource == null){
+                return null;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        DataSourceOutputDto result = new DataSourceOutputDto();
+        BeanUtils.copyProperties(dataSourceInputDto,result);
+        return result;
     }
 
     @Override

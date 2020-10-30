@@ -33,4 +33,8 @@ public class Result<T> {
     public static Result failed(Object data){
         return new Result("调用失败",data, UUID.randomUUID().toString().replace("-",""),false);
     }
+
+    public static Result failed(){
+        return new Result("调用失败",null, UUID.randomUUID().toString().replace("-",""),false);
+    }
 }

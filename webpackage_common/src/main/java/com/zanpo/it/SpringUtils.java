@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * Spring容器工具类
@@ -11,6 +12,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author cg
  * @date 2020/10/30 00:55
  */
+@Component
 public final class SpringUtils implements ApplicationContextAware {
 
     @Getter
@@ -18,7 +20,7 @@ public final class SpringUtils implements ApplicationContextAware {
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         // 初始化时得到applicationContext对象
-        if(applicationContext == null){
+        if(this.applicationContext == null){
             this.applicationContext = applicationContext;
         }
     }

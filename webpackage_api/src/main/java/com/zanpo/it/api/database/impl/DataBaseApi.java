@@ -37,6 +37,9 @@ public class DataBaseApi implements IDataBaseApi {
     @Override
     public Result<DataSourceOutputDto> createDataSource(DataSourceInputDto dataSourceInputDto) {
         DataSourceOutputDto dataSource = dataBaseApp.createDataSource(dataSourceInputDto);
+        if(dataSource == null){
+            return Result.failed();
+        }
         return Result.success(dataSource);
     }
 

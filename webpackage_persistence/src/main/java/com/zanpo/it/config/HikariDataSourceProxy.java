@@ -1,4 +1,4 @@
-package com.zanpo.it.config.datasource;
+package com.zanpo.it.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;

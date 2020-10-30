@@ -30,7 +30,7 @@ public interface IDataBaseApi {
     Result<List<DataSourceOutputDto>> getDataSources();
 
     @ApiOperation("更新数据源信息")
-    @PostMapping("/datasource/list")
+    @PostMapping("/datasource/update")
     Result<String> updateDataSource(DataSourceInputDto dataSourceInputDto);
 
     @ApiOperation("添加数据源信息")
