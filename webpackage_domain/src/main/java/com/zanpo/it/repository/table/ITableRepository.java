@@ -11,5 +11,5 @@ import java.util.List;
  * @date 2020/10/30 01:20
  */
 public interface ITableRepository {
-    List<TableAggr> findAllTables();
+    List<TableAggr> findAllTables(String schema);
 }

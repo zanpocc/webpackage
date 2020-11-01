@@ -5,7 +5,10 @@ import com.zanpo.it.appapi.database.IDataBaseApp;
 import com.zanpo.it.config.HikariDataSourceProxy;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
+import com.zanpo.it.dto.table.ColumnOutputDto;
+import com.zanpo.it.dto.table.TableOutputDto;
 import com.zanpo.it.repository.table.ITableRepository;
+import com.zanpo.it.repository.table.com.zanpo.it.aggr.ColumnAggr;
 import com.zanpo.it.repository.table.com.zanpo.it.aggr.TableAggr;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,9 +71,7 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public List<DataSourceOutputDto> getDataSources() {
-        List<TableAggr> allTables = tableRepository.findAllTables();
-        log.info("{}",allTables);
-        return null;
+         return null;
     }
 
     @Override
@@ -79,7 +81,6 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public DataSourceOutputDto createDataSource(DataSourceInputDto dataSourceInputDto) {
-        // TODO:
         try {
             DataSource dataSource = initHikariDataSource(dataSourceInputDto);
             if (dataSource == null){
@@ -97,5 +98,83 @@ public class DataBaseApp implements IDataBaseApp {
     @Override
     public String deleteDataSource(DataSourceInputDto dataSourceInputDto) {
         return null;
+    }
+
+    @Override
+    public List<TableOutputDto> findAllTables(String schema) {
+        List<TableAggr> allTables = tableRepository.findAllTables(schema);
+
+        List<TableOutputDto> result = new ArrayList<TableOutputDto>();
+        for(TableAggr item:allTables){
+            // 拷贝table属性
+            TableOutputDto tableOutputDto = new TableOutputDto();
+            BeanUtils.copyProperties(item,tableOutputDto);
+            result.add(tableOutputDto);
+
+            // 拷贝column属性
+            List<ColumnAggr> columns = item.getColumns();
+            if(columns == null){
+                continue;
+            }
+
+            List cols = new ArrayList();
+            for(ColumnAggr col : columns){
+                ColumnOutputDto columnOutputDto = new ColumnOutputDto();
+                BeanUtils.copyProperties(col,columnOutputDto);
+                cols.add(columnOutputDto);
+            }
+            tableOutputDto.setColumns(cols);
+        }
+
+        return result;
+    }
+
+    @Override
+    public String generateForeignKey(String schema) {
+        List<TableAggr> allTables = tableRepository.findAllTables(schema);
+
+        String result = "";
+
+        for(TableAggr item : allTables){
+            String name = item.getName();
+            String primaryKey = item.getPrimaryKey();
+            String foreignKeyName = name + "_" + primaryKey;
+            String primaryType = getPrimaryKeyType(item.getColumns(),primaryKey);
+
+            for(TableAggr subItem : allTables){
+                String tableName = subItem.getName();
+                if(tableName.equals(name)){
+                    continue;
+                }
+                List<ColumnAggr> columns = subItem.getColumns();
+                for(ColumnAggr col : columns){
+                    String colName = col.getName();
+                    if(colName.equals(foreignKeyName)){
+                        // 该表该字段是一个外键，指向外层的name表的主键
+                        String type = col.getType();
+                        if(type.equals(primaryType)){
+                            String foreignName = String.format("fk_%s_%s_%s",tableName,name,primaryKey);
+                            String sql = String.format("ALTER TABLE %s " +
+                                    "ADD CONSTRAINT %s " +
+                                    "FOREIGN KEY (%s) " +
+                                    "REFERENCES %s(%s);%s", tableName,foreignName, colName, name, primaryKey,System.lineSeparator());
+                            result += sql;
+                        }
+                    }
+                }
+            }
+
+        }
+        return result;
+    }
+
+    private String getPrimaryKeyType(List<ColumnAggr> columns, String primaryKey) {
+        for(ColumnAggr item : columns){
+            String name = item.getName();
+            if(name.equals(primaryKey)){
+                return item.getType();
+            }
+        }
+        return "";
     }
 }

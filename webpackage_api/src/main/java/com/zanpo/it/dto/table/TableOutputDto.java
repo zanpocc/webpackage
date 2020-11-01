@@ -1,20 +1,19 @@
-package com.zanpo.it.repository.table.com.zanpo.it.aggr;
+package com.zanpo.it.dto.table;
 
 import lombok.Data;
 
 import java.util.List;
 
-
 /**
  * 添加类说明
  *
  * @author cg
- * @date 2020/10/31 00:10
+ * @date 2020/11/1 21:15
  */
 @Data
-public class TableAggr {
+public class TableOutputDto {
     private String name;
     private String comment;
     private String primaryKey;
-    private List<ColumnAggr> columns;
+    private List<ColumnOutputDto> columns;
 }

@@ -2,6 +2,7 @@ package com.zanpo.it.appapi.database;
 
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
+import com.zanpo.it.dto.table.TableOutputDto;
 
 import java.util.List;
 
@@ -19,4 +20,8 @@ public interface IDataBaseApp {
     DataSourceOutputDto createDataSource(DataSourceInputDto dataSourceInputDto);
 
     String deleteDataSource(DataSourceInputDto dataSourceInputDto);
+
+    List<TableOutputDto> findAllTables(String schema);
+
+    String generateForeignKey(String schema);
 }

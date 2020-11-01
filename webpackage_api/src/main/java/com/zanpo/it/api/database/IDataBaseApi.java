@@ -2,11 +2,13 @@ package com.zanpo.it.api.database;
 
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
+import com.zanpo.it.dto.table.TableOutputDto;
 import com.zanpo.it.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,7 @@ import java.util.List;
  * @author cg
  * @date 2020/10/29 19:51
  */
-@Api("数据库设置API")
+@Api("数据库接口API")
 @RequestMapping("/database")
 @RestController
 public interface IDataBaseApi {
@@ -40,4 +42,12 @@ public interface IDataBaseApi {
     @ApiOperation("删除数据源信息")
     @DeleteMapping("/datasource/delete")
     Result<String> deleteDataSource(DataSourceInputDto dataSourceInputDto);
+
+    @ApiOperation("查询指定schema的所有表信息")
+    @GetMapping("/table/list/{schema}")
+    Result<List<TableOutputDto>> findAllTables(@PathVariable("schema") String schema);
+
+    @ApiOperation("根据外键命名规则生成外健添加SQL")
+    @GetMapping("/table/foreign/generate/{schema}")
+    Result<String> generateForeignKey(@PathVariable("schema") String schema);
 }

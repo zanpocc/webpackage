@@ -4,6 +4,7 @@ import com.zanpo.it.api.database.IDataBaseApi;
 import com.zanpo.it.appapi.database.IDataBaseApp;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
+import com.zanpo.it.dto.table.TableOutputDto;
 import com.zanpo.it.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,5 +48,16 @@ public class DataBaseApi implements IDataBaseApi {
     public Result<String> deleteDataSource(DataSourceInputDto dataSourceInputDto) {
         String s = dataBaseApp.deleteDataSource(dataSourceInputDto);
         return Result.success(s);
+    }
+
+    @Override
+    public Result<List<TableOutputDto>> findAllTables(String schema) {
+        List<TableOutputDto> result = dataBaseApp.findAllTables(schema);
+        return Result.success(result);
+    }
+
+    @Override
+    public Result<String> generateForeignKey(String schema) {
+        return Result.success(dataBaseApp.generateForeignKey(schema));
     }
 }

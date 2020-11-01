@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface ITableDao {
 
-   List<Table> findAllTables();
+   List<Table> findAllTables(String schema);
 }
