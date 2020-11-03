@@ -1,11 +1,11 @@
 package com.zanpo.it.app.database.impl;
 
+import com.zanpo.it.CopyUtils;
 import com.zanpo.it.SpringUtils;
 import com.zanpo.it.appapi.database.IDataBaseApp;
 import com.zanpo.it.config.HikariDataSourceProxy;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
-import com.zanpo.it.dto.table.ColumnOutputDto;
 import com.zanpo.it.dto.table.TableOutputDto;
 import com.zanpo.it.repository.table.ITableRepository;
 import com.zanpo.it.repository.table.com.zanpo.it.aggr.ColumnAggr;
@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,30 +102,8 @@ public class DataBaseApp implements IDataBaseApp {
     @Override
     public List<TableOutputDto> findAllTables(String schema) {
         List<TableAggr> allTables = tableRepository.findAllTables(schema);
-
-        List<TableOutputDto> result = new ArrayList<TableOutputDto>();
-        for(TableAggr item:allTables){
-            // 拷贝table属性
-            TableOutputDto tableOutputDto = new TableOutputDto();
-            BeanUtils.copyProperties(item,tableOutputDto);
-            result.add(tableOutputDto);
-
-            // 拷贝column属性
-            List<ColumnAggr> columns = item.getColumns();
-            if(columns == null){
-                continue;
-            }
-
-            List cols = new ArrayList();
-            for(ColumnAggr col : columns){
-                ColumnOutputDto columnOutputDto = new ColumnOutputDto();
-                BeanUtils.copyProperties(col,columnOutputDto);
-                cols.add(columnOutputDto);
-            }
-            tableOutputDto.setColumns(cols);
-        }
-
-        return result;
+        List<TableOutputDto> tableOutputDtos = CopyUtils.copyList(allTables, TableOutputDto.class);
+        return tableOutputDtos;
     }
 
     @Override

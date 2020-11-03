@@ -26,15 +26,15 @@ public class Result<T> {
         this.success = success;
     }
 
-    public static Result success(Object data){
+    public static <T> Result<T> success(T data){
         return new Result("调用成功",data, UUID.randomUUID().toString().replace("-",""),true);
     }
 
-    public static Result failed(Object data){
+    public static <T> Result<T> failed(T data){
         return new Result("调用失败",data, UUID.randomUUID().toString().replace("-",""),false);
     }
 
-    public static Result failed(){
+    public static <T> Result<T> failed(){
         return new Result("调用失败",null, UUID.randomUUID().toString().replace("-",""),false);
     }
 }
