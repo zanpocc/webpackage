@@ -1,7 +1,7 @@
-package com.zanpo.it.repository.impl;
+package com.zanpo.it.database.table.repository.impl;
 
 import com.zanpo.it.dao.table.ITableDao;
-import com.zanpo.it.database.table.com.zanpo.it.aggr.TableAggr;
+import com.zanpo.it.database.table.aggr.TableAggr;
 import com.zanpo.it.database.table.repository.ITableRepository;
 import com.zanpo.it.entity.Table;
 import com.zanpo.it.utils.CopyUtils;

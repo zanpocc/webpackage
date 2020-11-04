@@ -1,6 +1,6 @@
 package com.zanpo.it.database.table.repository;
 
-import com.zanpo.it.database.table.com.zanpo.it.aggr.TableAggr;
+import com.zanpo.it.database.table.aggr.TableAggr;
 
 import java.util.List;
 

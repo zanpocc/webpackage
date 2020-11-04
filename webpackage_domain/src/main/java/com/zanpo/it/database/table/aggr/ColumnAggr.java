@@ -1,4 +1,4 @@
-package com.zanpo.it.database.table.com.zanpo.it.aggr;
+package com.zanpo.it.database.table.aggr;
 
 import lombok.Data;
 
