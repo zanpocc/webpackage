@@ -1,3 +1,5 @@
 # Project exclude paths
 /webpackage_api/target/
 /webpackage_app/target/
+*.iml
+/.idea

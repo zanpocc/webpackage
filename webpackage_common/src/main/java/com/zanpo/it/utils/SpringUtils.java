@@ -1,4 +1,4 @@
-package com.zanpo.it;
+package com.zanpo.it.utils;
 
 import lombok.Getter;
 import org.springframework.beans.BeansException;

@@ -1,6 +1,4 @@
-package com.zanpo.it;
-
-import lombok.experimental.UtilityClass;
+package com.zanpo.it.utils;
 
 /**
  * 添加类说明
@@ -8,8 +6,7 @@ import lombok.experimental.UtilityClass;
  * @author cg
  * @date 2020/10/30 01:55
  */
-@UtilityClass
-public class DataSourceUtils {
+public final class DataSourceUtils {
 
     public boolean initDataSource(){
 

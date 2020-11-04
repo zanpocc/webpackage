@@ -1,15 +1,15 @@
 package com.zanpo.it.app.database.impl;
 
-import com.zanpo.it.CopyUtils;
-import com.zanpo.it.SpringUtils;
 import com.zanpo.it.appapi.database.IDataBaseApp;
 import com.zanpo.it.config.HikariDataSourceProxy;
+import com.zanpo.it.database.table.com.zanpo.it.aggr.ColumnAggr;
+import com.zanpo.it.database.table.com.zanpo.it.aggr.TableAggr;
+import com.zanpo.it.database.table.repository.ITableRepository;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.table.TableOutputDto;
-import com.zanpo.it.repository.table.ITableRepository;
-import com.zanpo.it.repository.table.com.zanpo.it.aggr.ColumnAggr;
-import com.zanpo.it.repository.table.com.zanpo.it.aggr.TableAggr;
+import com.zanpo.it.utils.CopyUtils;
+import com.zanpo.it.utils.SpringUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
@@ -32,7 +32,7 @@ import java.util.List;
 public class DataBaseApp implements IDataBaseApp {
 
     @Autowired
-    ITableRepository tableRepository;
+    private ITableRepository tableRepository;
 
     private DataSource initHikariDataSource(DataSourceInputDto dataSourceInputDto) throws Exception {
         String url = dataSourceInputDto.getUrl();

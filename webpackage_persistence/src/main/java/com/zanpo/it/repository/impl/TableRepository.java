@@ -1,10 +1,10 @@
 package com.zanpo.it.repository.impl;
 
-import com.zanpo.it.CopyUtils;
 import com.zanpo.it.dao.table.ITableDao;
+import com.zanpo.it.database.table.com.zanpo.it.aggr.TableAggr;
+import com.zanpo.it.database.table.repository.ITableRepository;
 import com.zanpo.it.entity.Table;
-import com.zanpo.it.repository.table.ITableRepository;
-import com.zanpo.it.repository.table.com.zanpo.it.aggr.TableAggr;
+import com.zanpo.it.utils.CopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
