@@ -14,6 +14,7 @@
             <result column="col_key" jdbcType="VARCHAR" property="key"/>
             <result column="col_comment" jdbcType="VARCHAR" property="comment"/>
             <result column="col_nullAble" jdbcType="VARCHAR" property="nullAble"/>
+            <result column="col_data_type" jdbcType="VARCHAR" property="dataType"/>
         </collection>
     </resultMap>
 
@@ -33,7 +34,8 @@
             col.COLUMN_KEY as col_key,
             col.COLUMN_TYPE as col_type,
             col.COLUMN_COMMENT as col_comment,
-            col.IS_NULLABLE as col_nullAble
+            col.IS_NULLABLE as col_nullAble,
+            col.data_type as col_data_type
         from information_schema.`TABLES` t
         left join information_schema.`COLUMNS` col on col.TABLE_NAME = t.TABLE_NAME
         where t.TABLE_SCHEMA = #{schema,jdbcType=VARCHAR}

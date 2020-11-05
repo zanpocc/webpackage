@@ -10,6 +10,7 @@ import lombok.Data;
  */
 @Data
 public class FileTemplate {
+    // 大包名下的小目录
     private String dirs;
     // 文件名，带后缀
     private String file;

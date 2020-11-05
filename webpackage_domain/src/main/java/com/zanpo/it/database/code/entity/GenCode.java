@@ -12,6 +12,8 @@ import java.util.List;
  */
 @Data
 public class GenCode {
-    private String path;
+    // 包路径名
+    private String packageName;
+    // 模板文件
     private List<FileTemplate> fileTemplates;
 }

@@ -45,7 +45,7 @@ public final class VelocityUtils {
         merge(ctx, sourceFile, new FileWriter(target));
     }
 
-    public static final void merge(VelocityContext ctx, String sourceFile, String sourceEncoding, Writer writer) throws IOException {
+    public static final void merge(VelocityContext ctx, String sourceFile, String sourceEncoding, Writer writer){
         // 创建模板
         Template t = ve.getTemplate(sourceFile);
         // 写出文件

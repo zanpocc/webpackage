@@ -15,4 +15,6 @@ public class ColumnOutputDto {
     private String key;
     private String comment;
     private String nullAble;
+    // 建表语句中的类型
+    private String dataType;
 }

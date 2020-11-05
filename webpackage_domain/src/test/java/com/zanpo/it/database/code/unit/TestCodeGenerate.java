@@ -1,7 +1,8 @@
-package com.zanpo.it.database.code;
+package com.zanpo.it.database.code.unit;
 
 import com.zanpo.it.database.code.entity.FileTemplate;
 import com.zanpo.it.database.code.entity.GenCode;
+import com.zanpo.it.database.code.service.CodeGenerateService;
 import com.zanpo.it.utils.VelocityUtils;
 import org.apache.velocity.VelocityContext;
 import org.junit.jupiter.api.Test;
@@ -18,11 +19,11 @@ public class TestCodeGenerate {
 
     @Test
     public void testGenerateCode(){
-        CodeGenerate codeGenerate = new CodeGenerate();
+        CodeGenerateService codeGenerate = new CodeGenerateService();
         VelocityContext ctx = new VelocityContext();
         ctx.put("name","hello world");
         GenCode genCode = new GenCode();
-        genCode.setPath("com/zanpo/it");
+        genCode.setPackageName("com/zanpo/it");
         genCode.setFileTemplates(Collections.singletonList(new FileTemplate("test","test.java","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/target/test.vm")));
         codeGenerate.generateCode("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/target",Collections.singletonList(genCode),ctx);
 
@@ -30,11 +31,13 @@ public class TestCodeGenerate {
 
     @Test
     public void testVelocityReplace(){
-        CodeGenerate codeGenerate = new CodeGenerate();
+        CodeGenerateService codeGenerate = new CodeGenerateService();
         VelocityContext ctx = new VelocityContext();
         ctx.put("name","hello world");
         String code = "test velocity replace: $name";
         String s = VelocityUtils.replace(ctx, code);
         System.out.println(s);
     }
+
+
 }
