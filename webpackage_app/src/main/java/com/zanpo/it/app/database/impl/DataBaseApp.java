@@ -70,7 +70,7 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public List<DataSourceOutputDto> getDataSources() {
-         return null;
+        return null;
     }
 
     @Override

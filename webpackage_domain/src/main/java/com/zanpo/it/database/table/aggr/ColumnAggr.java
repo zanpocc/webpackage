@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class ColumnAggr {
     private String name;
+    private String firstUppercaseName;
+    private String firstLowercaseName;
     private String type;
     private String key;
     private String comment;

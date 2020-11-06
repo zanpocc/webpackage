@@ -13,6 +13,8 @@ import java.util.List;
 @Data
 public class TableOutputDto {
     private String name;
+    private String firstLowercaseName;
+    private String firstUppercaseName;
     private String comment;
     private String primaryKey;
     private List<ColumnOutputDto> columns;

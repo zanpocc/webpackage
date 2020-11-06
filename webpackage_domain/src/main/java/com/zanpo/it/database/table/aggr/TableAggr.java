@@ -14,6 +14,8 @@ import java.util.List;
 @Data
 public class TableAggr {
     private String name;
+    private String firstLowercaseName;
+    private String firstUppercaseName;
     private String comment;
     private String primaryKey;
     private List<ColumnAggr> columns;

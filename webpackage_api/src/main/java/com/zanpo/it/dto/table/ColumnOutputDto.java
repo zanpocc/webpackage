@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class ColumnOutputDto {
     private String name;
+    private String firstLowercaseName;
+    private String firstUppercaseName;
     private String type;
     private String key;
     private String comment;
