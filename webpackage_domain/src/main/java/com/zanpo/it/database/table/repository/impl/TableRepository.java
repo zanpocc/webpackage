@@ -29,6 +29,7 @@ public class TableRepository implements ITableRepository {
             put("int","int");
             put("date","java.sql.Date");
             put("timestamp","java.sql.Timestamp");
+            put("datetime","java.sql.Date");
             put("mediumtext","String");
         }
     };

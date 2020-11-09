@@ -1,0 +1,26 @@
+package ${packageName};
+
+import java.util.List;
+import ${entityPackage}.${firstUppercaseName};
+
+#set($className="${firstUppercaseName}Dao")
+/**
+ * $className
+ *
+ * @author ${user}
+ * @date ${now}
+ */
+public interface $className {
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert($firstUppercaseName record);
+
+    int insertSelective($firstUppercaseName record);
+
+    $firstUppercaseName selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective($firstUppercaseName record);
+
+    int updateByPrimaryKey($firstUppercaseName record);
+}

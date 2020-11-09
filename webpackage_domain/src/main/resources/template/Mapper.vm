@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${daoPackageName}.${firstUppercaseName}Dao" >
+  <resultMap id="BaseResultMap" type="${entityPackage}.${firstUppercaseName}" >
+#foreach($i in $columns)
+	<result column="${i.name}" property="${i.name}" jdbcType="${i.dataType}" />
+#end
+  </resultMap>
+
+##如果不是最后一个元素，就添加逗号
+#macro(next)
+#if($foreach.hasNext),#end
+#end
+##循环第一个元素缩进4个空格
+#macro(firstLockIn)
+#if($velocityCount == 1)    #end
+#end
+##换行
+#macro(nextLine)
+
+#end
+##缩进
+#macro(LockIn4)    #end
+#macro(LockIn8)        #end
+##设置表名变量别名
+#set($tableName = $name)
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+#foreach($i in $columns)
+#firstLockIn()${i.name}#next()
+#end
+
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from $tableName
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from $tableName
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="${entityPackage}.${firstUppercaseName}" >
+    insert into $tableName (<include refid="Base_Column_List" />)
+    values (
+#foreach($i in $columns)
+#LockIn8()#{${i.name},jdbcType=${i.dataType}}#next()#nextLine()
+#end
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="${entityPackage}.${firstUppercaseName}" >
+    insert into $tableName
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+#foreach($i in $columns)
+      <if test="$i.name != null" >
+        $i.name,
+      </if>
+#end
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+#foreach($i in $columns)
+      <if test="$i.name != null" >
+        #{$i.name,jdbcType=$i.dataType},
+      </if>
+#end
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="${entityPackage}.${firstUppercaseName}" >
+    update $tableName
+    <set>
+#foreach($i in $columns)
+      <if test="${i.name} != null" >
+        title = #{${i.name},jdbcType=${i.dataType}},
+      </if>
+#end
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="${entityPackage}.${firstUppercaseName}" >
+    update $tableName
+    set
+#foreach($i in $columns)
+      ${i.name} = #{${i.name},jdbcType=${i.dataType}}#next()#nextLine()
+#end
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

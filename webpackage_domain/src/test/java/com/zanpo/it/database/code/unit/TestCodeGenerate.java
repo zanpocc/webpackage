@@ -24,7 +24,7 @@ public class TestCodeGenerate {
         ctx.put("name","hello world");
         GenCode genCode = new GenCode();
         genCode.setPackageName("com/zanpo/it");
-        genCode.setFileTemplates(Collections.singletonList(new FileTemplate("test","test.java","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/target/test.vm")));
+        genCode.setFileTemplates(Collections.singletonList(new FileTemplate("#name.java","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/src/main/resources/template/Dao.vm")));
         codeGenerate.generateCode("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/target",Collections.singletonList(genCode),ctx);
 
     }
@@ -38,6 +38,4 @@ public class TestCodeGenerate {
         String s = VelocityUtils.replace(ctx, code);
         System.out.println(s);
     }
-
-
 }

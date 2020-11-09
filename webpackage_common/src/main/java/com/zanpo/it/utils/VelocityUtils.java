@@ -45,7 +45,7 @@ public final class VelocityUtils {
         merge(ctx, sourceFile, new FileWriter(target));
     }
 
-    public static final void merge(VelocityContext ctx, String sourceFile, String sourceEncoding, Writer writer){
+    public static final void merge(VelocityContext ctx, String sourceFile, String sourceEncoding, Writer writer) {
         // 创建模板
         Template t = ve.getTemplate(sourceFile);
         // 写出文件
@@ -68,6 +68,8 @@ public final class VelocityUtils {
         Object[] keys = ctx.getKeys();
         for (Object key : keys) {
             result = result.replace("$" + key, ctx.get(key + "") + "");
+            result = result.replace("${" + key + "}", ctx.get(key + "") + "");
+
         }
         return result;
     }

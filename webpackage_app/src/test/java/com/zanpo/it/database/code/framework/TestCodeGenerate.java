@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * 添加类说明
@@ -38,12 +39,37 @@ public class TestCodeGenerate {
 
 
     @Test
-    public void testCodeGenerate(){
+    public void testCodeGenerateEntity(){
         GenCode genCode = new GenCode();
-        genCode.setPackageName("com/huawei/it");
-        genCode.setFileTemplates(Collections.singletonList(new FileTemplate("entity/$name","$name.java","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/target/test.vm")));
-        codeGenerateService.generateEntity("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/target",
+        genCode.setPackageName("com.zanpo.it.entity");
+        genCode.setFileTemplates(Collections.singletonList(new FileTemplate("${firstUppercaseName}.java","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/src/main/resources/template/Entity.vm")));
+        codeGenerateService.generateEntity("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_app/target",
                 genCode,"myblog");
+    }
+
+    @Test
+    public void testCodeGenerateDao(){
+        GenCode genCode = new GenCode();
+        genCode.setPackageName("com.zanpo.it.dao");
+        genCode.setFileTemplates(Collections.singletonList(new FileTemplate("${firstUppercaseName}Dao.java","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/src/main/resources/template/Dao.vm")));
+
+        HashMap<Object, Object> extraMap = new HashMap<>();
+        extraMap.put("entityPackage","com.zanpo.it.entity");
+        codeGenerateService.generate("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_app/target",
+                genCode,"myblog",extraMap);
+    }
+
+    @Test
+    public void testCodeGenerateMapper(){
+        GenCode genCode = new GenCode();
+        genCode.setPackageName("com.zanpo.it.mapper");
+        genCode.setFileTemplates(Collections.singletonList(new FileTemplate("${firstUppercaseName}Mapper.xml","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/src/main/resources/template/Mapper.vm")));
+
+        HashMap<Object, Object> extraMap = new HashMap<>();
+        extraMap.put("entityPackage","com.zanpo.it.entity");
+        extraMap.put("daoPackage","com.zanpo.it.dao");
+        codeGenerateService.generate("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_app/target",
+                genCode,"myblog",extraMap);
     }
 
 }

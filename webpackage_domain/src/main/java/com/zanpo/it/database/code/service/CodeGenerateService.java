@@ -13,9 +13,12 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 添加类说明
@@ -29,35 +32,49 @@ public class CodeGenerateService {
     @Autowired
     private ITableRepository tableRepository;
 
-    public void generateEntity(String path, GenCode genCode,String schema){
+    public void generate(String path, GenCode genCode, String schema,Map extraMap) {
+        String packageName = genCode.getPackageName();
         // 从数据库中收集对应schema的所有表信息,map<tableName,ctx>
-        Map<String,VelocityContext> ctxMap = getVelocityCtx(schema);
-        for(String key : ctxMap.keySet()){
+        Map<String, VelocityContext> ctxMap = getVelocityCtx(schema,extraMap);
+        for (String key : ctxMap.keySet()) {
             VelocityContext ctx = ctxMap.get(key);
             // 对于每个都执行生成
             List<FileTemplate> fileTemplates = genCode.getFileTemplates();
-            for(FileTemplate fileTemplate : fileTemplates){
+            for (FileTemplate fileTemplate : fileTemplates) {
                 String template = fileTemplate.getTemplate();
                 String file = fileTemplate.getFile();
-                String generateCodeAbsPath = getGenerateCodeAbsPath(file,path,fileTemplate.getDirs());
+                String generateCodeAbsPath = getGenerateCodeAbsPath(file, path,packageName);
+                setPackageToContext(ctx, packageName);
                 generateCodeAbsPath = VelocityUtils.replace(ctx, generateCodeAbsPath);
-                makeDirExist(generateCodeAbsPath.substring(0,generateCodeAbsPath.lastIndexOf("/")));
+                makeDirExist(generateCodeAbsPath.substring(0, generateCodeAbsPath.lastIndexOf("/")));
                 try {
-                    VelocityUtils.merge(ctx,template,generateCodeAbsPath);
+                    VelocityUtils.merge(ctx, template, generateCodeAbsPath);
                 } catch (IOException e) {
-                    throw new BaseException("CodeGenerateService.generateEntity:"+e);
+                    throw new BaseException("CodeGenerateService.generateEntity:" + e);
                 }
             }
         }
+    }
 
+    public void generateEntity(String path, GenCode genCode, String schema) {
+        generate(path,genCode,schema,null);
+    }
+
+
+
+    private void setPackageToContext(VelocityContext ctx, String packageName) {
+        packageName = packageName.replaceAll("\\\\",".");
+        packageName = packageName.replaceAll("/",".");
+        ctx.put("packageName", packageName);
     }
 
     private String getGenerateCodeAbsPath(String file, String... paths) {
         String tempPath = "";
-        for(String path : paths){
-            path = path.replaceAll("\\\\","/");
-            while(path.indexOf("//") >= 0){
-                path = path.replaceAll("//","/");
+        for (String path : paths) {
+            path.replaceAll("\\.", "/");
+            path = path.replaceAll("\\\\", "/");
+            while (path.indexOf("//") >= 0) {
+                path = path.replaceAll("//", "/");
             }
             tempPath = tempPath + "/" + path;
         }
@@ -65,30 +82,47 @@ public class CodeGenerateService {
         return dir + "/" + file;
     }
 
-    private Map<String, VelocityContext> getVelocityCtx(String schema) {
-
+    private Map<String, VelocityContext> getVelocityCtx(String schema,Map<String,Object> extraMap) {
         List<TableAggr> allTables = tableRepository.findAllTables(schema);
         Map map = new HashMap(allTables.size());
-        for(TableAggr tableAggr : allTables){
+        for (TableAggr tableAggr : allTables) {
             // 每张表一个context对象
             VelocityContext ctx = obj2VelocityContext(tableAggr);
             String tableName = tableAggr.getName();
-            map.put(tableName,ctx);
+            map.put(tableName, ctx);
+            putCommonVelocityContext(ctx);
+            if(extraMap != null && !extraMap.isEmpty()){
+                putExtraVelocityContext(ctx,extraMap);
+            }
         }
 
         return map;
     }
 
+    private void putExtraVelocityContext(VelocityContext ctx, Map<String, Object> extraMap) {
+        Set<String> keys = extraMap.keySet();
+        for (String key : keys) {
+            Object o = extraMap.get(key);
+            ctx.put(key,o);
+        }
+    }
+
+    private void putCommonVelocityContext(VelocityContext ctx) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ctx.put("now",simpleDateFormat.format(new Date()));
+        ctx.put("user",System.getProperty("user.name"));
+    }
+
     private VelocityContext obj2VelocityContext(Object obj) {
         VelocityContext velocityContext = new VelocityContext();
         Field[] fields = obj.getClass().getDeclaredFields();
-        for(Field field : fields){
+        for (Field field : fields) {
             field.setAccessible(true);
             String key = field.getName();
             Object value = null;
             try {
                 value = field.get(obj);
-                velocityContext.put(key,value);
+                velocityContext.put(key, value);
             } catch (IllegalAccessException e) {
                 throw new BaseException("CodeGenerateService.obj2VelocityContext");
             }
@@ -107,9 +141,9 @@ public class CodeGenerateService {
             makeDirExist(file);
             List<FileTemplate> fileTemplates = genCode.getFileTemplates();
             for (FileTemplate fileTemplate : fileTemplates) {
-                String genFile = makeDirExist(realPath + "/" + fileTemplate.getDirs()) + "/" + fileTemplate.getFile();
+                String genFile = makeDirExist(realPath) + "/" + fileTemplate.getFile();
                 // 命名也支持velocity引擎
-                genFile = VelocityUtils.replace(ctx,genFile);
+                genFile = VelocityUtils.replace(ctx, genFile);
                 String template = fileTemplate.getTemplate();
                 try {
                     VelocityUtils.merge(ctx, template, genFile);

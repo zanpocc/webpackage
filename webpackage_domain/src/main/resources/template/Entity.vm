@@ -1,0 +1,29 @@
+package $packageName;
+
+import java.util.List;
+
+#set($className="${firstUppercaseName}")
+/**
+ * $className
+ *
+ * @author ${user}
+ * @date ${now}
+ */
+public class $className {
+
+#foreach($i in $columns)
+    private $i.javaType $i.firstLowercaseName;
+
+#end
+
+#foreach($i in $columns)
+    public ${i.javaType} get${i.firstUppercaseName}() {
+        return ${i.firstLowercaseName};
+    }
+
+    public void set${i.firstUppercaseName}(${i.javaType} ${i.firstLowercaseName}) {
+        this.${i.firstLowercaseName} = ${i.firstLowercaseName};
+    }
+
+#end
+}
