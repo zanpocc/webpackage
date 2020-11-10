@@ -114,7 +114,7 @@ public class DataBaseApp implements IDataBaseApp {
 
         for(TableAggr item : allTables){
             String name = item.getName();
-            String primaryKey = item.getPrimaryKey();
+            String primaryKey = item.getPrimaryKey().getName();
             String foreignKeyName = name + "_" + primaryKey;
             String primaryType = getPrimaryKeyType(item.getColumns(),primaryKey);
 

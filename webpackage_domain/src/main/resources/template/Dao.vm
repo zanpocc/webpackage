@@ -12,13 +12,13 @@ import ${entityPackage}.${firstUppercaseName};
  */
 public interface $className {
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(${primaryKey.javaType} ${primaryKey.firstLowercaseName});
 
     int insert($firstUppercaseName record);
 
     int insertSelective($firstUppercaseName record);
 
-    $firstUppercaseName selectByPrimaryKey(Integer id);
+    $firstUppercaseName selectByPrimaryKey(${primaryKey.javaType} ${primaryKey.firstLowercaseName});
 
     int updateByPrimaryKeySelective($firstUppercaseName record);
 

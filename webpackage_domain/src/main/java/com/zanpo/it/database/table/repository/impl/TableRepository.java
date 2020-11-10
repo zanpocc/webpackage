@@ -26,7 +26,7 @@ public class TableRepository implements ITableRepository {
     private static final Map<String ,String > sql2javaTypeMapping = new HashMap<String, String>(){
         {
             put("varchar","String");
-            put("int","int");
+            put("int","Integer");
             put("date","java.sql.Date");
             put("timestamp","java.sql.Timestamp");
             put("datetime","java.sql.Date");
@@ -42,13 +42,31 @@ public class TableRepository implements ITableRepository {
         List<TableAggr> tableAggrs = CopyUtils.copyList(allTables, TableAggr.class);
         for(TableAggr tableAggr : tableAggrs){
             setTableNamedProperties(tableAggr);
+            setPrimaryKeyNamedProperties(tableAggr);
+            setPrimaryKeyJavaTypeProperties(tableAggr);
             List<ColumnAggr> columns = tableAggr.getColumns();
             for(ColumnAggr columnAggr : columns){
-                columnAggr.setJavaType(sql2javaTypeMapping.get(columnAggr.getDataType().toLowerCase()));
+                setColumnJavaTypeProperties(columnAggr);
                 setColumnNamedProperties(columnAggr);
             }
         }
         return tableAggrs;
+    }
+
+    private void setPrimaryKeyJavaTypeProperties(TableAggr tableAggr) {
+        ColumnAggr primaryKey = tableAggr.getPrimaryKey();
+        primaryKey.setJavaType(sql2javaTypeMapping.get(primaryKey.getDataType().toLowerCase()));
+    }
+
+    private void setColumnJavaTypeProperties(ColumnAggr columnAggr) {
+        columnAggr.setJavaType(sql2javaTypeMapping.get(columnAggr.getDataType().toLowerCase()));
+    }
+
+    private void setPrimaryKeyNamedProperties(TableAggr tableAggr) {
+        ColumnAggr primaryKey = tableAggr.getPrimaryKey();
+        String priName = primaryKey.getName();
+        primaryKey.setFirstLowercaseName(NamedUtils.wordsFirstLowercase(priName,NamedUtils.UNDER_LINE));
+        primaryKey.setFirstUppercaseName(NamedUtils.wordsFirstUppercase(priName,NamedUtils.UNDER_LINE));
     }
 
     private void setColumnNamedProperties(ColumnAggr columnAggr) {

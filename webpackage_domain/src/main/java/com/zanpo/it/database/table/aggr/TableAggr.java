@@ -17,6 +17,6 @@ public class TableAggr {
     private String firstLowercaseName;
     private String firstUppercaseName;
     private String comment;
-    private String primaryKey;
+    private ColumnAggr primaryKey;
     private List<ColumnAggr> columns;
 }

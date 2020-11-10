@@ -13,8 +13,8 @@ public class Column {
     private String name;
     // 建表语句中的类型加大小
     private String type;
-    private String key;
     private String comment;
+
     private String nullAble;
     // 建表语句中的类型
     private String dataType;

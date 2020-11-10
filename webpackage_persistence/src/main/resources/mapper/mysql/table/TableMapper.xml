@@ -7,11 +7,14 @@
     <resultMap id="tableResultMap" type="com.zanpo.it.entity.Table">
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="comment" jdbcType="VARCHAR" property="comment"/>
-        <result column="primary_key" jdbcType="VARCHAR" property="primaryKey"/>
+        <association property="primaryKey" javaType="com.zanpo.it.entity.Column">
+            <result column="pri_name" jdbcType="VARCHAR" property="name" />
+            <result column="pri_type" jdbcType="VARCHAR" property="type"/>
+            <result column="pri_data_type" jdbcType="VARCHAR" property="dataType"/>
+        </association>
         <collection property="columns" javaType="java.util.ArrayList" ofType="com.zanpo.it.entity.Column">
             <result column="col_name" jdbcType="VARCHAR" property="name" />
             <result column="col_type" jdbcType="VARCHAR" property="type"/>
-            <result column="col_key" jdbcType="VARCHAR" property="key"/>
             <result column="col_comment" jdbcType="VARCHAR" property="comment"/>
             <result column="col_nullAble" jdbcType="VARCHAR" property="nullAble"/>
             <result column="col_data_type" jdbcType="VARCHAR" property="dataType"/>
@@ -20,24 +23,32 @@
 
     <select id="findAllTables" resultMap="tableResultMap" parameterType="java.lang.String">
         select
-            t.table_name as name,
-            t.table_comment as comment,
-            (
-            select
-            kcu.COLUMN_NAME
-            from information_schema.KEY_COLUMN_USAGE kcu
-            where kcu.TABLE_SCHEMA = #{schema,jdbcType=VARCHAR}
-            and kcu.TABLE_NAME = t.table_name
-            and kcu.CONSTRAINT_NAME = 'PRIMARY'
-            ) as primary_key,
+            t.TABLE_NAME as name,
+            t.TABLE_COMMENT as comment,
+            tmp.COLUMN_NAME as pri_name,
+            tmp.COLUMN_TYPE as pri_type,
+            tmp.DATA_TYPE as pri_data_type,
+            col.COLUMN_TYPE as col_type,
             col.COLUMN_NAME as col_name,
             col.COLUMN_KEY as col_key,
             col.COLUMN_TYPE as col_type,
             col.COLUMN_COMMENT as col_comment,
             col.IS_NULLABLE as col_nullAble,
-            col.data_type as col_data_type
+            col.DATA_TYPE as col_data_type
         from information_schema.`TABLES` t
         left join information_schema.`COLUMNS` col on col.TABLE_NAME = t.TABLE_NAME
-        where t.TABLE_SCHEMA = #{schema,jdbcType=VARCHAR}
+        left join information_schema.`KEY_COLUMN_USAGE` kcu on kcu.TABLE_NAME = t.TABLE_NAME
+        left join (
+            select
+                t.TABLE_NAME,
+                col.COLUMN_NAME,
+                col.COLUMN_TYPE,
+                col.DATA_TYPE
+            from information_schema.`TABLES` t
+            left join information_schema.`COLUMNS` col on col.TABLE_NAME = t.TABLE_NAME
+            left join information_schema.`KEY_COLUMN_USAGE` kcu on kcu.TABLE_NAME = t.TABLE_NAME
+            where t.TABLE_SCHEMA = #{schema,jdbcType=VARCHAR} and kcu.COLUMN_NAME = col.COLUMN_NAME
+        ) tmp on tmp.TABLE_NAME = t.TABLE_NAME
+        where t.TABLE_SCHEMA = #{schema,jdbcType=VARCHAR} and kcu.COLUMN_NAME != col.COLUMN_NAME
     </select>
 </mapper>

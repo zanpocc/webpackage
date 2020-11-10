@@ -16,6 +16,6 @@ public class TableOutputDto {
     private String firstLowercaseName;
     private String firstUppercaseName;
     private String comment;
-    private String primaryKey;
+    private ColumnOutputDto primaryKey;
     private List<ColumnOutputDto> columns;
 }
