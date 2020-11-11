@@ -10,7 +10,6 @@ import lombok.Data;
  */
 @Data
 public class DataSourceOutputDto {
-    String id;
     String url;
     String user;
     String password;

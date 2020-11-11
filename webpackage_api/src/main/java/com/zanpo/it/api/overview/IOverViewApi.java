@@ -1,7 +1,7 @@
 package com.zanpo.it.api.overview;
 
 import com.zanpo.it.dto.overview.SystemInfoOutputDto;
-import com.zanpo.it.utils.Result;
+import com.zanpo.it.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;

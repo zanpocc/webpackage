@@ -7,7 +7,8 @@ import com.zanpo.it.database.table.aggr.TableAggr;
 import com.zanpo.it.database.table.repository.ITableRepository;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
-import com.zanpo.it.dto.table.TableOutputDto;
+import com.zanpo.it.dto.database.TableOutputDto;
+import com.zanpo.it.exception.BaseException;
 import com.zanpo.it.utils.CopyUtils;
 import com.zanpo.it.utils.SpringUtils;
 import com.zaxxer.hikari.HikariConfig;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,7 +36,7 @@ public class DataBaseApp implements IDataBaseApp {
     @Autowired
     private ITableRepository tableRepository;
 
-    private DataSource initHikariDataSource(DataSourceInputDto dataSourceInputDto) throws Exception {
+    private DataSource initHikariDataSource(DataSourceInputDto dataSourceInputDto) {
         String url = dataSourceInputDto.getUrl();
         log.info("mysql database url: {}", url);
         HikariConfig hikariConfig = new HikariConfig();
@@ -51,18 +53,17 @@ public class DataBaseApp implements IDataBaseApp {
         try {
             hikariDataSource = new HikariDataSource(hikariConfig);
             DataSource dataSource = SpringUtils.getBean(DataSource.class); // springComponent 是自己封装的spring 工具类，便于从 IOC 容器中获取Bean， 这里获取到初始化加载的DataSource Bean，
-            if(dataSource instanceof HikariDataSourceProxy){ // 实际上是 HikariDataSourceProxy 类
+            if (dataSource instanceof HikariDataSourceProxy) { // 实际上是 HikariDataSourceProxy 类
                 HikariDataSourceProxy hikariDataSourceProxy = (HikariDataSourceProxy) dataSource;
                 hikariDataSourceProxy.setDataSource(hikariDataSource);
             }
         } catch (HikariPool.PoolInitializationException e) {
-            e.printStackTrace();
             if (e.getMessage().contains("Access denied")) {
-                throw new Exception("database username or password not courrent");
+                throw new BaseException("数据库账户密码不正确");
             } else if (e.getMessage().contains("Unknown database")) {
-                throw new Exception("database not exists ");
+                throw new BaseException("数据库不存在");
             } else {
-                throw new Exception("data parameters not right ");
+                throw new BaseException("无法连接到数据库");
             }
         }
         return hikariDataSource;
@@ -70,7 +71,17 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public List<DataSourceOutputDto> getDataSources() {
-        return null;
+        HikariDataSourceProxy bean = (HikariDataSourceProxy) SpringUtils.getBean(DataSource.class);
+        HikariDataSource dataSource = bean.getDataSource();
+        if (dataSource == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        DataSourceOutputDto dataSourceOutputDto = new DataSourceOutputDto();
+        dataSourceOutputDto.setUrl(dataSource.getJdbcUrl());
+        dataSourceOutputDto.setUser(dataSource.getUsername());
+        dataSourceOutputDto.setPassword(dataSource.getPassword());
+        return Collections.singletonList(dataSourceOutputDto);
     }
 
     @Override
@@ -80,17 +91,15 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public DataSourceOutputDto createDataSource(DataSourceInputDto dataSourceInputDto) {
-        try {
-            DataSource dataSource = initHikariDataSource(dataSourceInputDto);
-            if (dataSource == null){
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        DataSource dataSource = initHikariDataSource(dataSourceInputDto);
+        if (dataSource == null) {
+            return null;
         }
 
+
         DataSourceOutputDto result = new DataSourceOutputDto();
-        BeanUtils.copyProperties(dataSourceInputDto,result);
+        BeanUtils.copyProperties(dataSourceInputDto, result);
         return result;
     }
 
@@ -112,29 +121,29 @@ public class DataBaseApp implements IDataBaseApp {
 
         String result = "";
 
-        for(TableAggr item : allTables){
+        for (TableAggr item : allTables) {
             String name = item.getName();
             String primaryKey = item.getPrimaryKey().getName();
             String foreignKeyName = name + "_" + primaryKey;
-            String primaryType = getPrimaryKeyType(item.getColumns(),primaryKey);
+            String primaryType = getPrimaryKeyType(item.getColumns(), primaryKey);
 
-            for(TableAggr subItem : allTables){
+            for (TableAggr subItem : allTables) {
                 String tableName = subItem.getName();
-                if(tableName.equals(name)){
+                if (tableName.equals(name)) {
                     continue;
                 }
                 List<ColumnAggr> columns = subItem.getColumns();
-                for(ColumnAggr col : columns){
+                for (ColumnAggr col : columns) {
                     String colName = col.getName();
-                    if(colName.equals(foreignKeyName)){
+                    if (colName.equals(foreignKeyName)) {
                         // 该表该字段是一个外键，指向外层的name表的主键
                         String type = col.getType();
-                        if(type.equals(primaryType)){
-                            String foreignName = String.format("fk_%s_%s_%s",tableName,name,primaryKey);
+                        if (type.equals(primaryType)) {
+                            String foreignName = String.format("fk_%s_%s_%s", tableName, name, primaryKey);
                             String sql = String.format("ALTER TABLE %s " +
                                     "ADD CONSTRAINT %s " +
                                     "FOREIGN KEY (%s) " +
-                                    "REFERENCES %s(%s);%s", tableName,foreignName, colName, name, primaryKey,System.lineSeparator());
+                                    "REFERENCES %s(%s);%s", tableName, foreignName, colName, name, primaryKey, System.lineSeparator());
                             result += sql;
                         }
                     }
@@ -146,9 +155,9 @@ public class DataBaseApp implements IDataBaseApp {
     }
 
     private String getPrimaryKeyType(List<ColumnAggr> columns, String primaryKey) {
-        for(ColumnAggr item : columns){
+        for (ColumnAggr item : columns) {
             String name = item.getName();
-            if(name.equals(primaryKey)){
+            if (name.equals(primaryKey)) {
                 return item.getType();
             }
         }

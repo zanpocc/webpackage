@@ -2,7 +2,7 @@ package com.zanpo.it.appapi.database;
 
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
-import com.zanpo.it.dto.table.TableOutputDto;
+import com.zanpo.it.dto.database.TableOutputDto;
 
 import java.util.List;
 

@@ -1,8 +1,6 @@
-package com.zanpo.it.dto.table;
+package com.zanpo.it.dto.database;
 
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * 添加类说明
@@ -11,11 +9,13 @@ import java.util.List;
  * @date 2020/11/1 21:15
  */
 @Data
-public class TableOutputDto {
+public class ColumnOutputDto {
     private String name;
     private String firstLowercaseName;
     private String firstUppercaseName;
+    private String type;
     private String comment;
-    private ColumnOutputDto primaryKey;
-    private List<ColumnOutputDto> columns;
+    private String nullAble;
+    // 建表语句中的类型
+    private String dataType;
 }

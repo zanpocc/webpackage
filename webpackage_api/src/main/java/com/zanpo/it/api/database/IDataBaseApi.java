@@ -2,8 +2,8 @@ package com.zanpo.it.api.database;
 
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
-import com.zanpo.it.dto.table.TableOutputDto;
-import com.zanpo.it.utils.Result;
+import com.zanpo.it.dto.database.TableOutputDto;
+import com.zanpo.it.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 public interface IDataBaseApi {
 
-    @ApiOperation("列举所以数据源信息")
+    @ApiOperation("列举所有数据源信息")
     @GetMapping("/datasource/list")
     Result<List<DataSourceOutputDto>> getDataSources();
 

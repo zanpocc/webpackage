@@ -4,8 +4,8 @@ import com.zanpo.it.api.database.IDataBaseApi;
 import com.zanpo.it.appapi.database.IDataBaseApp;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
-import com.zanpo.it.dto.table.TableOutputDto;
-import com.zanpo.it.utils.Result;
+import com.zanpo.it.dto.database.TableOutputDto;
+import com.zanpo.it.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +38,7 @@ public class DataBaseApi implements IDataBaseApi {
     @Override
     public Result<DataSourceOutputDto> createDataSource(DataSourceInputDto dataSourceInputDto) {
         DataSourceOutputDto dataSource = dataBaseApp.createDataSource(dataSourceInputDto);
-        if(dataSource == null){
+        if (dataSource == null) {
             return Result.failed();
         }
         return Result.success(dataSource);

@@ -3,7 +3,7 @@ package com.zanpo.it.api.overview.impl;
 import com.zanpo.it.api.overview.IOverViewApi;
 import com.zanpo.it.appapi.overview.IOverViewApp;
 import com.zanpo.it.dto.overview.SystemInfoOutputDto;
-import com.zanpo.it.utils.Result;
+import com.zanpo.it.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

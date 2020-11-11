@@ -1,4 +1,4 @@
-package com.zanpo.it.utils;
+package com.zanpo.it.result;
 
 import lombok.Data;
 
@@ -36,5 +36,9 @@ public class Result<T> {
 
     public static <T> Result<T> failed(){
         return new Result("调用失败",null, UUID.randomUUID().toString().replace("-",""),false);
+    }
+
+    public static <T> Result<T> failed(String msg){
+        return new Result(msg,null, UUID.randomUUID().toString().replace("-",""),false);
     }
 }
