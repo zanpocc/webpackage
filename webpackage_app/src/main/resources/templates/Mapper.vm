@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="${daoPackageName}.${firstUppercaseName}Dao" >
+<mapper namespace="${daoPackageName}.${daoName}" >
 
 ##如果不是最后一个元素，就添加逗号
 #macro(next)
@@ -20,7 +20,7 @@
 ##设置表名变量别名
 #set($tableName = $name)
 
-  <resultMap id="BaseResultMap" type="${entityPackage}.${firstUppercaseName}" >
+  <resultMap id="BaseResultMap" type="${entityPackageName}.${entityName}" >
     <result column="${primaryKey.name}" property="${primaryKey.name}" jdbcType="${primaryKey.dataType}" />
 #foreach($i in $columns)
 	<result column="${i.name}" property="${i.name}" jdbcType="${i.dataType}" />
@@ -43,7 +43,7 @@
     where id = #{${primaryKey.name},jdbcType=${primaryKey.dataType}}
   </delete>
 
-  <insert id="insert" parameterType="${entityPackage}.${firstUppercaseName}" >
+  <insert id="insert" parameterType="${entityPackageName}.${entityName}" >
     insert into $tableName (<include refid="Base_Column_List" />)
     values (
 #LockIn8()#{${primaryKey.name},jdbcType=${primaryKey.dataType}},
@@ -53,7 +53,7 @@
     )
   </insert>
 
-  <insert id="insertSelective" parameterType="${entityPackage}.${firstUppercaseName}" >
+  <insert id="insertSelective" parameterType="${entityPackageName}.${entityName}" >
     insert into $tableName
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="${primaryKey.name} != null" >
@@ -77,19 +77,19 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="${entityPackage}.${firstUppercaseName}" >
+  <update id="updateByPrimaryKeySelective" parameterType="${entityPackageName}.${entityName}" >
     update $tableName
     <set>
 #foreach($i in $columns)
       <if test="${i.name} != null" >
-        title = #{${i.name},jdbcType=${i.dataType}},
+        ${i.name} = #{${i.name},jdbcType=${i.dataType}},
       </if>
 #end
     </set>
     where ${primaryKey.name} = #{${primaryKey.name},jdbcType=${primaryKey.dataType}}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="${entityPackage}.${firstUppercaseName}" >
+  <update id="updateByPrimaryKey" parameterType="${entityPackageName}.${entityName}" >
     update $tableName
     set
 #foreach($i in $columns)

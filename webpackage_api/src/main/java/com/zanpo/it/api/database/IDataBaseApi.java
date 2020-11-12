@@ -1,5 +1,6 @@
 package com.zanpo.it.api.database;
 
+import com.zanpo.it.dto.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,4 +52,8 @@ public interface IDataBaseApi {
     @ApiOperation("根据外键命名规则生成外健添加SQL")
     @GetMapping("/table/foreign/generate/{schema}")
     Result<String> generateForeignKey(@PathVariable("schema") String schema);
+
+    @ApiOperation("生成数据库的Mybatis代码")
+    @PostMapping("/codeGen")
+    Result<String> generateCode(@RequestBody CodeGenInputDto codeGenInputDto);
 }

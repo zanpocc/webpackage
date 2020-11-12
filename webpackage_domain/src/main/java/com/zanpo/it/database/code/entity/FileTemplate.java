@@ -15,6 +15,9 @@ public class FileTemplate {
     // 绝对路径
     private String template;
 
+    public FileTemplate() {
+    }
+
     public FileTemplate(String file, String template) {
         this.file = file;
         this.template = template;

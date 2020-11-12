@@ -2,6 +2,7 @@ package com.zanpo.it.api.database.impl;
 
 import com.zanpo.it.api.database.IDataBaseApi;
 import com.zanpo.it.appapi.database.IDataBaseApp;
+import com.zanpo.it.dto.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
@@ -59,5 +60,11 @@ public class DataBaseApi implements IDataBaseApi {
     @Override
     public Result<String> generateForeignKey(String schema) {
         return Result.success(dataBaseApp.generateForeignKey(schema));
+    }
+
+    @Override
+    public Result<String> generateCode(CodeGenInputDto codeGenInputDto) {
+        String result = dataBaseApp.generateCode(codeGenInputDto);
+        return Result.success(result);
     }
 }

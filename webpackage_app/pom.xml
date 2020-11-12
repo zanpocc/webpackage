@@ -66,5 +66,16 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <!--        打包资源文件到类目录下-->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.vm</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
     </build>
 </project>

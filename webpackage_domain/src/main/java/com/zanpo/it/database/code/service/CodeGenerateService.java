@@ -102,8 +102,9 @@ public class CodeGenerateService {
     private void putExtraVelocityContext(VelocityContext ctx, Map<String, Object> extraMap) {
         Set<String> keys = extraMap.keySet();
         for (String key : keys) {
-            Object o = extraMap.get(key);
-            ctx.put(key,o);
+            String s = (String) extraMap.get(key);
+            s = VelocityUtils.replace(ctx,s);
+            ctx.put(key,s);
         }
     }
 

@@ -1,16 +1,15 @@
 package ${packageName};
 
 import java.util.List;
-import ${entityPackage}.${firstUppercaseName};
+import ${entityPackageName}.${entityName};
 
-#set($className="${firstUppercaseName}Dao")
 /**
- * $className
+ * ${daoName}
  *
  * @author ${user}
  * @date ${now}
  */
-public interface $className {
+public interface ${daoName} {
 
     int deleteByPrimaryKey(${primaryKey.javaType} ${primaryKey.firstLowercaseName});
 

@@ -1,5 +1,6 @@
 package com.zanpo.it.appapi.database;
 
+import com.zanpo.it.dto.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
@@ -24,4 +25,6 @@ public interface IDataBaseApp {
     List<TableOutputDto> findAllTables(String schema);
 
     String generateForeignKey(String schema);
+
+    String generateCode(CodeGenInputDto codeGenInputDto);
 }

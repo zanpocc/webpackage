@@ -1,15 +1,14 @@
-package $packageName;
+package ${packageName};
 
 import java.util.List;
 
-#set($className="${firstUppercaseName}")
 /**
- * $className
+ * ${entityName}
  *
  * @author ${user}
  * @date ${now}
  */
-public class $className {
+public class ${entityName} {
 
 #foreach($i in $columns)
     private $i.javaType $i.firstLowercaseName;

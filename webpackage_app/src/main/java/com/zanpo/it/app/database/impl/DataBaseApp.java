@@ -2,9 +2,13 @@ package com.zanpo.it.app.database.impl;
 
 import com.zanpo.it.appapi.database.IDataBaseApp;
 import com.zanpo.it.config.HikariDataSourceProxy;
+import com.zanpo.it.database.code.entity.FileTemplate;
+import com.zanpo.it.database.code.entity.GenCode;
+import com.zanpo.it.database.code.service.CodeGenerateService;
 import com.zanpo.it.database.table.aggr.ColumnAggr;
 import com.zanpo.it.database.table.aggr.TableAggr;
 import com.zanpo.it.database.table.repository.ITableRepository;
+import com.zanpo.it.dto.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
@@ -18,10 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
 import javax.sql.DataSource;
+import java.io.FileNotFoundException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 添加类说明
@@ -35,6 +43,9 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Autowired
     private ITableRepository tableRepository;
+
+    @Autowired
+    private CodeGenerateService codeGenerateService;
 
     private DataSource initHikariDataSource(DataSourceInputDto dataSourceInputDto) {
         String url = dataSourceInputDto.getUrl();
@@ -152,6 +163,89 @@ public class DataBaseApp implements IDataBaseApp {
 
         }
         return result;
+    }
+
+    @Override
+    public String generateCode(CodeGenInputDto codeGenInputDto) {
+        String savePath = codeGenInputDto.getSavePath();
+        String schema = codeGenInputDto.getSchema();
+        generateEntityCode(codeGenInputDto, savePath, schema);
+        generateDaoCode(codeGenInputDto, savePath, schema);
+        generateMapperCode(codeGenInputDto, savePath, schema);
+
+        return "success";
+    }
+
+    private void generateMapperCode(CodeGenInputDto codeGenInputDto, String savePath, String schema) {
+        Map extraMap = putArgumentToExtraMap(codeGenInputDto);
+
+        GenCode genCode = new GenCode();
+        genCode.setPackageName(codeGenInputDto.getMapperPackageName());
+
+        String path = null;
+        try {
+            path = ResourceUtils.getURL("classpath:templates/Mapper.vm").getPath();
+        } catch (FileNotFoundException e) {
+            throw new BaseException("Mapper模板文件未找到");
+        }
+        genCode.setFileTemplates(Collections.singletonList(new FileTemplate(codeGenInputDto.getMapperName(),path)));
+        codeGenerateService.generate(savePath,genCode, schema,extraMap);
+    }
+
+    private Map putArgumentToExtraMap(CodeGenInputDto codeGenInputDto) {
+        String entityName = codeGenInputDto.getEntityName();
+        String entityPackageName = codeGenInputDto.getEntityPackageName();
+        String daoName = codeGenInputDto.getDaoName();
+        String daoPackageName = codeGenInputDto.getDaoPackageName();
+        String mapperName = codeGenInputDto.getMapperName();
+        String mapperPackageName = codeGenInputDto.getMapperPackageName();
+
+        // 参数中去掉拓展名
+        entityName = entityName.substring(0,entityName.lastIndexOf("."));
+        daoName = daoName.substring(0,daoName.lastIndexOf("."));
+        mapperName = mapperName.substring(0,mapperName.lastIndexOf("."));
+
+
+        Map extraMap = new HashMap();
+        extraMap.put("entityName",entityName);
+        extraMap.put("entityPackageName",entityPackageName);
+        extraMap.put("daoName",daoName);
+        extraMap.put("daoPackageName",daoPackageName);
+        extraMap.put("mapperName",mapperName);
+        extraMap.put("mapperPackageName",mapperPackageName);
+        return extraMap;
+    }
+
+    private void generateDaoCode(CodeGenInputDto codeGenInputDto, String savePath, String schema) {
+        Map extraMap = putArgumentToExtraMap(codeGenInputDto);
+
+        GenCode genCode = new GenCode();
+        genCode.setPackageName(codeGenInputDto.getDaoPackageName());
+
+        String path = null;
+        try {
+            path = ResourceUtils.getURL("classpath:templates/Dao.vm").getPath();
+        } catch (FileNotFoundException e) {
+            throw new BaseException("Dao模板文件未找到");
+        }
+        genCode.setFileTemplates(Collections.singletonList(new FileTemplate(codeGenInputDto.getDaoName(),path)));
+        codeGenerateService.generate(savePath,genCode, schema,extraMap);
+    }
+
+    private void generateEntityCode(CodeGenInputDto codeGenInputDto, String savePath, String schema) {
+        Map extraMap = putArgumentToExtraMap(codeGenInputDto);
+
+        GenCode genCode = new GenCode();
+        genCode.setPackageName(codeGenInputDto.getEntityPackageName());
+
+        String path = null;
+        try {
+            path = ResourceUtils.getURL("classpath:templates/Entity.vm").getPath();
+        } catch (FileNotFoundException e) {
+            throw new BaseException("Entity模板文件未找到");
+        }
+        genCode.setFileTemplates(Collections.singletonList(new FileTemplate(codeGenInputDto.getEntityName(),path)));
+        codeGenerateService.generate(savePath,genCode, schema,extraMap);
     }
 
     private String getPrimaryKeyType(List<ColumnAggr> columns, String primaryKey) {
