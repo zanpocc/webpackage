@@ -10,6 +10,8 @@ import java.util.List;
  * @author cg
  * @date 2020/10/30 01:20
  */
-public interface ITableRepository {
+public interface IDatabaseRepository {
     List<TableAggr> findAllTables(String schema);
+
+    List<String> findAllSchema();
 }

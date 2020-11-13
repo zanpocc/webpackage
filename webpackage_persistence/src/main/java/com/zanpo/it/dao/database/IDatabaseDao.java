@@ -1,4 +1,4 @@
-package com.zanpo.it.dao.table;
+package com.zanpo.it.dao.database;
 
 import com.zanpo.it.entity.Table;
 
@@ -10,7 +10,10 @@ import java.util.List;
  * @author cg
  * @date 2020/10/30 01:24
  */
-public interface ITableDao {
+public interface IDatabaseDao {
 
    List<Table> findAllTables(String schema);
+
+   List<String> findAllSchema();
+
 }

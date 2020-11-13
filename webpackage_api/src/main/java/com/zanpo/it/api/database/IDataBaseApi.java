@@ -24,17 +24,18 @@ import java.util.List;
  * @author cg
  * @date 2020/10/29 19:51
  */
-@Api("数据库接口API")
+@Api(tags = "数据库接口API")
 @RequestMapping("/database")
 @RestController
 public interface IDataBaseApi {
 
     @ApiOperation("列举所有数据源信息")
     @GetMapping("/datasource/list")
-    Result<List<DataSourceOutputDto>> getDataSources();
+    Result<List<DataSourceOutputDto>> findDataSources();
 
     @ApiOperation("更新数据源信息")
     @PostMapping("/datasource/update")
+    @Deprecated
     Result<String> updateDataSource(DataSourceInputDto dataSourceInputDto);
 
     @ApiOperation("添加数据源信息")
@@ -43,6 +44,7 @@ public interface IDataBaseApi {
 
     @ApiOperation("删除数据源信息")
     @DeleteMapping("/datasource/delete")
+    @Deprecated
     Result<String> deleteDataSource(DataSourceInputDto dataSourceInputDto);
 
     @ApiOperation("查询指定schema的所有表信息")
@@ -56,4 +58,8 @@ public interface IDataBaseApi {
     @ApiOperation("生成数据库的Mybatis代码")
     @PostMapping("/codeGen")
     Result<String> generateCode(@RequestBody CodeGenInputDto codeGenInputDto);
+
+    @ApiOperation("查找数据库中的schema")
+    @GetMapping("/schema/list")
+    Result<List<String>> findAllSchema();
 }

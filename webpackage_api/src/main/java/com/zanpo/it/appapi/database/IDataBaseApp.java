@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2020/10/29 19:52
  */
 public interface IDataBaseApp {
-    List<DataSourceOutputDto> getDataSources();
+    List<DataSourceOutputDto> findDataSources();
 
     String updateDataSource(DataSourceInputDto dataSourceInputDto);
 
@@ -27,4 +27,6 @@ public interface IDataBaseApp {
     String generateForeignKey(String schema);
 
     String generateCode(CodeGenInputDto codeGenInputDto);
+
+    List<String> findAllSchema();
 }

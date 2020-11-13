@@ -7,7 +7,7 @@ import com.zanpo.it.database.code.entity.GenCode;
 import com.zanpo.it.database.code.service.CodeGenerateService;
 import com.zanpo.it.database.table.aggr.ColumnAggr;
 import com.zanpo.it.database.table.aggr.TableAggr;
-import com.zanpo.it.database.table.repository.ITableRepository;
+import com.zanpo.it.database.table.repository.IDatabaseRepository;
 import com.zanpo.it.dto.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
@@ -42,7 +42,7 @@ import java.util.Map;
 public class DataBaseApp implements IDataBaseApp {
 
     @Autowired
-    private ITableRepository tableRepository;
+    private IDatabaseRepository databaseRepository;
 
     @Autowired
     private CodeGenerateService codeGenerateService;
@@ -81,7 +81,7 @@ public class DataBaseApp implements IDataBaseApp {
     }
 
     @Override
-    public List<DataSourceOutputDto> getDataSources() {
+    public List<DataSourceOutputDto> findDataSources() {
         HikariDataSourceProxy bean = (HikariDataSourceProxy) SpringUtils.getBean(DataSource.class);
         HikariDataSource dataSource = bean.getDataSource();
         if (dataSource == null) {
@@ -108,7 +108,6 @@ public class DataBaseApp implements IDataBaseApp {
             return null;
         }
 
-
         DataSourceOutputDto result = new DataSourceOutputDto();
         BeanUtils.copyProperties(dataSourceInputDto, result);
         return result;
@@ -121,14 +120,14 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public List<TableOutputDto> findAllTables(String schema) {
-        List<TableAggr> allTables = tableRepository.findAllTables(schema);
+        List<TableAggr> allTables = databaseRepository.findAllTables(schema);
         List<TableOutputDto> tableOutputDtos = CopyUtils.copyList(allTables, TableOutputDto.class);
         return tableOutputDtos;
     }
 
     @Override
     public String generateForeignKey(String schema) {
-        List<TableAggr> allTables = tableRepository.findAllTables(schema);
+        List<TableAggr> allTables = databaseRepository.findAllTables(schema);
 
         String result = "";
 
@@ -174,6 +173,12 @@ public class DataBaseApp implements IDataBaseApp {
         generateMapperCode(codeGenInputDto, savePath, schema);
 
         return "success";
+    }
+
+    @Override
+    public List<String> findAllSchema() {
+        List<String> result = databaseRepository.findAllSchema();
+        return result;
     }
 
     private void generateMapperCode(CodeGenInputDto codeGenInputDto, String savePath, String schema) {

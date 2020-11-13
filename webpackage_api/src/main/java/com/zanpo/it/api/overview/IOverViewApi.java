@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author cg
  * @date 2020/10/28 20:22
  */
-@Api("概览API")
+@Api(tags = "概览API")
 @RequestMapping("/overview")
 @RestController
 public interface IOverViewApi {

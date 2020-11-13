@@ -1,9 +1,9 @@
 package com.zanpo.it.database.table.repository.impl;
 
-import com.zanpo.it.dao.table.ITableDao;
+import com.zanpo.it.dao.database.IDatabaseDao;
 import com.zanpo.it.database.table.aggr.ColumnAggr;
 import com.zanpo.it.database.table.aggr.TableAggr;
-import com.zanpo.it.database.table.repository.ITableRepository;
+import com.zanpo.it.database.table.repository.IDatabaseRepository;
 import com.zanpo.it.entity.Table;
 import com.zanpo.it.utils.CopyUtils;
 import com.zanpo.it.utils.NamedUtils;
@@ -21,7 +21,7 @@ import java.util.Map;
  * @date 2020/10/30 01:22
  */
 @Component
-public class TableRepository implements ITableRepository {
+public class DatabaseRepository implements IDatabaseRepository {
 
     private static final Map<String ,String > sql2javaTypeMapping = new HashMap<String, String>(){
         {
@@ -35,7 +35,7 @@ public class TableRepository implements ITableRepository {
     };
 
     @Autowired
-    private ITableDao dao;
+    private IDatabaseDao dao;
 
     public List<TableAggr> findAllTables(String schema) {
         List<Table> allTables = dao.findAllTables(schema);
@@ -51,6 +51,11 @@ public class TableRepository implements ITableRepository {
             }
         }
         return tableAggrs;
+    }
+
+    public List<String> findAllSchema() {
+        List<String> result = dao.findAllSchema();
+        return result;
     }
 
     private void setPrimaryKeyJavaTypeProperties(TableAggr tableAggr) {

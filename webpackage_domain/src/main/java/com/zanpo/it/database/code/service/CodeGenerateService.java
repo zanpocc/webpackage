@@ -3,7 +3,7 @@ package com.zanpo.it.database.code.service;
 import com.zanpo.it.database.code.entity.FileTemplate;
 import com.zanpo.it.database.code.entity.GenCode;
 import com.zanpo.it.database.table.aggr.TableAggr;
-import com.zanpo.it.database.table.repository.ITableRepository;
+import com.zanpo.it.database.table.repository.IDatabaseRepository;
 import com.zanpo.it.exception.BaseException;
 import com.zanpo.it.utils.VelocityUtils;
 import org.apache.velocity.VelocityContext;
@@ -30,7 +30,7 @@ import java.util.Set;
 public class CodeGenerateService {
 
     @Autowired
-    private ITableRepository tableRepository;
+    private IDatabaseRepository tableRepository;
 
     public void generate(String path, GenCode genCode, String schema,Map extraMap) {
         String packageName = genCode.getPackageName();

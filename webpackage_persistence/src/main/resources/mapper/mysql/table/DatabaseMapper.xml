@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zanpo.it.dao.table.ITableDao">
+<mapper namespace="com.zanpo.it.dao.database.IDatabaseDao">
 
     <resultMap id="tableResultMap" type="com.zanpo.it.entity.Table">
         <result column="name" jdbcType="VARCHAR" property="name" />
@@ -50,5 +50,9 @@
             where t.TABLE_SCHEMA = #{schema,jdbcType=VARCHAR} and kcu.COLUMN_NAME = col.COLUMN_NAME
         ) tmp on tmp.TABLE_NAME = t.TABLE_NAME
         where t.TABLE_SCHEMA = #{schema,jdbcType=VARCHAR} and kcu.COLUMN_NAME != col.COLUMN_NAME
+    </select>
+
+    <select id="findAllSchema" resultType="String">
+        SELECT DISTINCT SCHEMA_NAME from information_schema.SCHEMATA ORDER BY SCHEMA_NAME
     </select>
 </mapper>

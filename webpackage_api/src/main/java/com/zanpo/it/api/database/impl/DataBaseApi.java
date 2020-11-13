@@ -25,8 +25,8 @@ public class DataBaseApi implements IDataBaseApi {
     private IDataBaseApp dataBaseApp;
 
     @Override
-    public Result<List<DataSourceOutputDto>> getDataSources() {
-        List<DataSourceOutputDto> dataSources = dataBaseApp.getDataSources();
+    public Result<List<DataSourceOutputDto>> findDataSources() {
+        List<DataSourceOutputDto> dataSources = dataBaseApp.findDataSources();
         return Result.success(dataSources);
     }
 
@@ -65,6 +65,12 @@ public class DataBaseApi implements IDataBaseApi {
     @Override
     public Result<String> generateCode(CodeGenInputDto codeGenInputDto) {
         String result = dataBaseApp.generateCode(codeGenInputDto);
+        return Result.success(result);
+    }
+
+    @Override
+    public Result<List<String>> findAllSchema() {
+        List<String> result = dataBaseApp.findAllSchema();
         return Result.success(result);
     }
 }

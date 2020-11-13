@@ -17,7 +17,7 @@ import java.util.List;
  * @author cg
  * @date 2020/11/11 20:54
  */
-@Api("本地目录API")
+@Api(tags = "本地目录API")
 @RequestMapping("/directory")
 @RestController
 public interface IDirectoryApi {
