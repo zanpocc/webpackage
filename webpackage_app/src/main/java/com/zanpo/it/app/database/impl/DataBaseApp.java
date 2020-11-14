@@ -1,6 +1,6 @@
 package com.zanpo.it.app.database.impl;
 
-import com.zanpo.it.appapi.database.IDataBaseApp;
+import com.zanpo.it.app.database.IDataBaseApp;
 import com.zanpo.it.config.HikariDataSourceProxy;
 import com.zanpo.it.database.code.entity.FileTemplate;
 import com.zanpo.it.database.code.entity.GenCode;
@@ -8,7 +8,7 @@ import com.zanpo.it.database.code.service.CodeGenerateService;
 import com.zanpo.it.database.table.aggr.ColumnAggr;
 import com.zanpo.it.database.table.aggr.TableAggr;
 import com.zanpo.it.database.table.repository.IDatabaseRepository;
-import com.zanpo.it.dto.CodeGenInputDto;
+import com.zanpo.it.dto.database.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;

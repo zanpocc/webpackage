@@ -1,6 +1,6 @@
 package com.zanpo.it.app.overview.impl;
 
-import com.zanpo.it.appapi.overview.IOverViewApp;
+import com.zanpo.it.app.overview.IOverViewApp;
 import com.zanpo.it.dto.overview.SystemInfoOutputDto;
 import org.springframework.stereotype.Component;
 

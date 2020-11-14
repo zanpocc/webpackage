@@ -1,6 +1,6 @@
 package com.zanpo.it.api.database;
 
-import com.zanpo.it.dto.CodeGenInputDto;
+import com.zanpo.it.dto.database.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 添加类说明
+ * 数据库接口API接口
  *
  * @author cg
  * @date 2020/10/29 19:51

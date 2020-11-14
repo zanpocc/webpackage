@@ -1,7 +1,7 @@
 package com.zanpo.it.api.directory.impl;
 
 import com.zanpo.it.api.directory.IDirectoryApi;
-import com.zanpo.it.appapi.directory.IDirectoryApp;
+import com.zanpo.it.app.directory.IDirectoryApp;
 import com.zanpo.it.dto.directory.PathNodeOutputDto;
 import com.zanpo.it.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;

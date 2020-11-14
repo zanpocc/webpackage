@@ -1,4 +1,4 @@
-package com.zanpo.it.appapi.directory;
+package com.zanpo.it.app.directory;
 
 import com.zanpo.it.dto.directory.PathNodeOutputDto;
 

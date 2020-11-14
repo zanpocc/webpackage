@@ -1,6 +1,6 @@
 package com.zanpo.it.app.directory.impl;
 
-import com.zanpo.it.appapi.directory.IDirectoryApp;
+import com.zanpo.it.app.directory.IDirectoryApp;
 import com.zanpo.it.dto.directory.PathNodeOutputDto;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +45,7 @@ public class DirectoryApp implements IDirectoryApp {
             }
         });
 
-        List<PathNodeOutputDto> result = new ArrayList<>(dirs.size());
+        List<PathNodeOutputDto> result = new ArrayList(dirs.size());
         Random random = new Random();
         for(String item : dirs){
             PathNodeOutputDto pathNodeOutputDto = new PathNodeOutputDto();

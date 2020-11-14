@@ -1,4 +1,4 @@
-package com.zanpo.it.dto;
+package com.zanpo.it.dto.database;
 
 import lombok.Data;
 

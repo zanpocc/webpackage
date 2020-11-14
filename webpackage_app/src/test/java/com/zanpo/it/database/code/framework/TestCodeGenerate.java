@@ -1,7 +1,7 @@
 package com.zanpo.it.database.code.framework;
 
 import com.zanpo.it.AppApplication;
-import com.zanpo.it.appapi.database.IDataBaseApp;
+import com.zanpo.it.app.database.IDataBaseApp;
 import com.zanpo.it.database.code.entity.FileTemplate;
 import com.zanpo.it.database.code.entity.GenCode;
 import com.zanpo.it.database.code.service.CodeGenerateService;
@@ -53,7 +53,7 @@ public class TestCodeGenerate {
         genCode.setPackageName("com.zanpo.it.dao");
         genCode.setFileTemplates(Collections.singletonList(new FileTemplate("${firstUppercaseName}Dao.java","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/src/main/resources/template/Dao.vm")));
 
-        HashMap<Object, Object> extraMap = new HashMap<>();
+        HashMap<Object, Object> extraMap = new HashMap();
         extraMap.put("entityPackage","com.zanpo.it.entity");
         codeGenerateService.generate("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_app/target",
                 genCode,"myblog",extraMap);
@@ -65,7 +65,7 @@ public class TestCodeGenerate {
         genCode.setPackageName("com.zanpo.it.mapper");
         genCode.setFileTemplates(Collections.singletonList(new FileTemplate("${firstUppercaseName}Mapper.xml","/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_domain/src/main/resources/template/Mapper.vm")));
 
-        HashMap<Object, Object> extraMap = new HashMap<>();
+        HashMap<Object, Object> extraMap = new HashMap();
         extraMap.put("entityPackage","com.zanpo.it.entity");
         extraMap.put("daoPackage","com.zanpo.it.dao");
         codeGenerateService.generate("/Volumes/Mac/IdeaPro/webpackage_parent/webpackage_app/target",

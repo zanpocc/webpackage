@@ -1,6 +1,6 @@
-package com.zanpo.it.appapi.database;
+package com.zanpo.it.app.database;
 
-import com.zanpo.it.dto.CodeGenInputDto;
+import com.zanpo.it.dto.database.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
