@@ -18,6 +18,7 @@ import java.util.Random;
  * @date 2020/11/11 21:02
  */
 @Component
+@SuppressWarnings("unchecked")
 public class DirectoryApp implements IDirectoryApp {
     @Override
     public List<PathNodeOutputDto> getChildrenDirs(String path) {

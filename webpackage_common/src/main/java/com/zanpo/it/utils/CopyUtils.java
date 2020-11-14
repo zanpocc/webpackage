@@ -11,6 +11,7 @@ import java.util.List;
  * @author cg
  * @date 2020/11/1 21:00
  */
+@SuppressWarnings("unchecked")
 public final class CopyUtils {
 
     private static final Gson gson = new Gson();

@@ -11,6 +11,7 @@ import java.util.UUID;
  * @date 2020/10/28 22:47
  */
 @Data
+@SuppressWarnings("unchecked")
 public class Result<T> {
     private String message;
     private T data;

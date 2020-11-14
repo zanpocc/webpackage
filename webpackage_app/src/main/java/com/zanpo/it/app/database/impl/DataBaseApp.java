@@ -39,6 +39,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
+@SuppressWarnings("unchecked")
 public class DataBaseApp implements IDataBaseApp {
 
     @Autowired

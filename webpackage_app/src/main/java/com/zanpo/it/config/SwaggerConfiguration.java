@@ -18,6 +18,7 @@ import java.util.ArrayList;
  */
 @Configuration
 @EnableSwagger2
+@SuppressWarnings("unchecked")
 public class SwaggerConfiguration {
     @Bean
     public Docket docket(){

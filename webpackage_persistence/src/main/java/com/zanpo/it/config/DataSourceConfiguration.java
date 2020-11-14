@@ -22,6 +22,7 @@ import java.util.List;
  * @date 2020/10/30 02:15
  */
 @Configuration
+@SuppressWarnings("unchecked")
 public class DataSourceConfiguration {
     @Bean
     public DataSource dataSource() {

@@ -27,6 +27,7 @@ import java.util.Set;
  * @date 2020/11/4 22:17
  */
 @Component
+@SuppressWarnings("unchecked")
 public class CodeGenerateService {
 
     @Autowired

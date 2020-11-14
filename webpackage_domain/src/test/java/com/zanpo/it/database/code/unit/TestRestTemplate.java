@@ -13,6 +13,7 @@ import java.util.Map;
  * @author cg
  * @date 2020/11/11 00:16
  */
+@SuppressWarnings("unchecked")
 public class TestRestTemplate {
     private static final RestTemplate rest = new RestTemplate();
 

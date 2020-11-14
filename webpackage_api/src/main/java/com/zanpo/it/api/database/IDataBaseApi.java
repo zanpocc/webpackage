@@ -35,7 +35,6 @@ public interface IDataBaseApi {
 
     @ApiOperation("更新数据源信息")
     @PostMapping("/datasource/update")
-    @Deprecated
     Result<String> updateDataSource(DataSourceInputDto dataSourceInputDto);
 
     @ApiOperation("添加数据源信息")
@@ -44,7 +43,6 @@ public interface IDataBaseApi {
 
     @ApiOperation("删除数据源信息")
     @DeleteMapping("/datasource/delete")
-    @Deprecated
     Result<String> deleteDataSource(DataSourceInputDto dataSourceInputDto);
 
     @ApiOperation("查询指定schema的所有表信息")
