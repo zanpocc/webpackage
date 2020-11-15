@@ -2,17 +2,15 @@ package com.zanpo.it.app.database.impl;
 
 import com.zanpo.it.app.database.IDataBaseApp;
 import com.zanpo.it.config.HikariDataSourceProxy;
-import com.zanpo.it.database.code.entity.FileTemplate;
-import com.zanpo.it.database.code.entity.GenCode;
-import com.zanpo.it.database.code.service.CodeGenerateService;
-import com.zanpo.it.database.table.aggr.ColumnAggr;
-import com.zanpo.it.database.table.aggr.TableAggr;
-import com.zanpo.it.database.table.repository.IDatabaseRepository;
 import com.zanpo.it.dto.database.CodeGenInputDto;
 import com.zanpo.it.dto.database.DataSourceInputDto;
 import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
+import com.zanpo.it.entity.database.table.ColumnEntity;
+import com.zanpo.it.entity.database.table.TableEntity;
 import com.zanpo.it.exception.BaseException;
+import com.zanpo.it.model.codegen.mybatis.MybatisCodeGenModelModel;
+import com.zanpo.it.repository.IDatabaseRepository;
 import com.zanpo.it.utils.CopyUtils;
 import com.zanpo.it.utils.SpringUtils;
 import com.zaxxer.hikari.HikariConfig;
@@ -26,7 +24,9 @@ import org.springframework.util.ResourceUtils;
 
 import javax.sql.DataSource;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +44,6 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Autowired
     private IDatabaseRepository databaseRepository;
-
-    @Autowired
-    private CodeGenerateService codeGenerateService;
 
     private DataSource initHikariDataSource(DataSourceInputDto dataSourceInputDto) {
         String url = dataSourceInputDto.getUrl();
@@ -121,30 +118,30 @@ public class DataBaseApp implements IDataBaseApp {
 
     @Override
     public List<TableOutputDto> findAllTables(String schema) {
-        List<TableAggr> allTables = databaseRepository.findAllTables(schema);
+        List<TableEntity> allTables = databaseRepository.findAllTables(schema);
         List<TableOutputDto> tableOutputDtos = CopyUtils.copyList(allTables, TableOutputDto.class);
         return tableOutputDtos;
     }
 
     @Override
     public String generateForeignKey(String schema) {
-        List<TableAggr> allTables = databaseRepository.findAllTables(schema);
+        List<TableEntity> allTables = databaseRepository.findAllTables(schema);
 
         String result = "";
 
-        for (TableAggr item : allTables) {
+        for (TableEntity item : allTables) {
             String name = item.getName();
             String primaryKey = item.getPrimaryKey().getName();
             String foreignKeyName = name + "_" + primaryKey;
             String primaryType = getPrimaryKeyType(item.getColumns(), primaryKey);
 
-            for (TableAggr subItem : allTables) {
+            for (TableEntity subItem : allTables) {
                 String tableName = subItem.getName();
                 if (tableName.equals(name)) {
                     continue;
                 }
-                List<ColumnAggr> columns = subItem.getColumns();
-                for (ColumnAggr col : columns) {
+                List<ColumnEntity> columns = subItem.getColumns();
+                for (ColumnEntity col : columns) {
                     String colName = col.getName();
                     if (colName.equals(foreignKeyName)) {
                         // 该表该字段是一个外键，指向外层的name表的主键
@@ -184,18 +181,26 @@ public class DataBaseApp implements IDataBaseApp {
 
     private void generateMapperCode(CodeGenInputDto codeGenInputDto, String savePath, String schema) {
         Map extraMap = putArgumentToExtraMap(codeGenInputDto);
+        extraMap.put("packageName",codeGenInputDto.getMapperPackageName());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        extraMap.put("now",simpleDateFormat.format(new Date()));
+        extraMap.put("user",System.getProperty("user.name"));
 
-        GenCode genCode = new GenCode();
-        genCode.setPackageName(codeGenInputDto.getMapperPackageName());
+        MybatisCodeGenModelModel model = new MybatisCodeGenModelModel();
+        model.setPackageName(codeGenInputDto.getMapperPackageName());
+        model.setSchema(schema);
+        model.setCodeGenPath(codeGenInputDto.getSavePath());
+        model.setExtraParams(extraMap);
+        model.setFileName(codeGenInputDto.getMapperName());
 
-        String path = null;
+        String templatePath = null;
         try {
-            path = ResourceUtils.getURL("classpath:templates/Mapper.vm").getPath();
+            templatePath = ResourceUtils.getURL("classpath:templates/Mapper.vm").getPath();
         } catch (FileNotFoundException e) {
-            throw new BaseException("Mapper模板文件未找到");
+            throw new BaseException("Mapper 模板文件未找到");
         }
-        genCode.setFileTemplates(Collections.singletonList(new FileTemplate(codeGenInputDto.getMapperName(),path)));
-        codeGenerateService.generate(savePath,genCode, schema,extraMap);
+        model.setTemplateFilePath(templatePath);
+        model.generate();
     }
 
     private Map putArgumentToExtraMap(CodeGenInputDto codeGenInputDto) {
@@ -224,38 +229,54 @@ public class DataBaseApp implements IDataBaseApp {
 
     private void generateDaoCode(CodeGenInputDto codeGenInputDto, String savePath, String schema) {
         Map extraMap = putArgumentToExtraMap(codeGenInputDto);
+        extraMap.put("packageName",codeGenInputDto.getDaoPackageName());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        extraMap.put("now",simpleDateFormat.format(new Date()));
+        extraMap.put("user",System.getProperty("user.name"));
 
-        GenCode genCode = new GenCode();
-        genCode.setPackageName(codeGenInputDto.getDaoPackageName());
+        MybatisCodeGenModelModel model = new MybatisCodeGenModelModel();
+        model.setPackageName(codeGenInputDto.getDaoPackageName());
+        model.setSchema(schema);
+        model.setCodeGenPath(codeGenInputDto.getSavePath());
+        model.setExtraParams(extraMap);
+        model.setFileName(codeGenInputDto.getDaoName());
 
-        String path = null;
+        String templatePath = null;
         try {
-            path = ResourceUtils.getURL("classpath:templates/Dao.vm").getPath();
+            templatePath = ResourceUtils.getURL("classpath:templates/Dao.vm").getPath();
         } catch (FileNotFoundException e) {
-            throw new BaseException("Dao模板文件未找到");
+            throw new BaseException("Dao 模板文件未找到");
         }
-        genCode.setFileTemplates(Collections.singletonList(new FileTemplate(codeGenInputDto.getDaoName(),path)));
-        codeGenerateService.generate(savePath,genCode, schema,extraMap);
+        model.setTemplateFilePath(templatePath);
+        model.generate();
     }
 
     private void generateEntityCode(CodeGenInputDto codeGenInputDto, String savePath, String schema) {
         Map extraMap = putArgumentToExtraMap(codeGenInputDto);
+        extraMap.put("packageName",codeGenInputDto.getEntityPackageName());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        extraMap.put("now",simpleDateFormat.format(new Date()));
+        extraMap.put("user",System.getProperty("user.name"));
 
-        GenCode genCode = new GenCode();
-        genCode.setPackageName(codeGenInputDto.getEntityPackageName());
+        MybatisCodeGenModelModel model = new MybatisCodeGenModelModel();
+        model.setPackageName(codeGenInputDto.getEntityPackageName());
+        model.setSchema(schema);
+        model.setCodeGenPath(codeGenInputDto.getSavePath());
+        model.setExtraParams(extraMap);
+        model.setFileName(codeGenInputDto.getEntityName());
 
-        String path = null;
+        String templatePath = null;
         try {
-            path = ResourceUtils.getURL("classpath:templates/Entity.vm").getPath();
+            templatePath = ResourceUtils.getURL("classpath:templates/Entity.vm").getPath();
         } catch (FileNotFoundException e) {
             throw new BaseException("Entity模板文件未找到");
         }
-        genCode.setFileTemplates(Collections.singletonList(new FileTemplate(codeGenInputDto.getEntityName(),path)));
-        codeGenerateService.generate(savePath,genCode, schema,extraMap);
+        model.setTemplateFilePath(templatePath);
+        model.generate();
     }
 
-    private String getPrimaryKeyType(List<ColumnAggr> columns, String primaryKey) {
-        for (ColumnAggr item : columns) {
+    private String getPrimaryKeyType(List<ColumnEntity> columns, String primaryKey) {
+        for (ColumnEntity item : columns) {
             String name = item.getName();
             if (name.equals(primaryKey)) {
                 return item.getType();

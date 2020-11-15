@@ -1,4 +1,4 @@
-package com.zanpo.it.database.table.aggr;
+package com.zanpo.it.entity.database.table;
 
 import lombok.Data;
 
@@ -12,11 +12,11 @@ import java.util.List;
  * @date 2020/10/31 00:10
  */
 @Data
-public class TableAggr {
+public class TableEntity {
     private String name;
     private String firstLowercaseName;
     private String firstUppercaseName;
     private String comment;
-    private ColumnAggr primaryKey;
-    private List<ColumnAggr> columns;
+    private ColumnEntity primaryKey;
+    private List<ColumnEntity> columns;
 }

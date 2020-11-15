@@ -1,5 +1,6 @@
 package com.zanpo.it.utils;
 
+import com.zanpo.it.exception.BaseException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -9,6 +10,7 @@ import org.apache.velocity.runtime.resource.loader.FileResourceLoader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
 
 /**
  * 添加类说明
@@ -72,6 +74,30 @@ public final class VelocityUtils {
 
         }
         return result;
+    }
+
+    /**
+     * 根据对象生成VelocityContext，key=field name value=field value
+     *
+     * @param obj
+     * @return
+     */
+    public static VelocityContext obj2VelocityContext(Object obj) {
+        VelocityContext velocityContext = new VelocityContext();
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            String key = field.getName();
+            Object value = null;
+            try {
+                value = field.get(obj);
+                velocityContext.put(key, value);
+            } catch (IllegalAccessException e) {
+                throw new BaseException("CodeGenerateDomainService.obj2VelocityContext");
+            }
+        }
+
+        return velocityContext;
     }
 
 }

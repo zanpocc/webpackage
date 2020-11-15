@@ -1,4 +1,4 @@
-package com.zanpo.it.database.table.aggr;
+package com.zanpo.it.entity.database.table;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2020/10/31 00:10
  */
 @Data
-public class ColumnAggr {
+public class ColumnEntity {
     private String name;
     private String firstUppercaseName;
     private String firstLowercaseName;
