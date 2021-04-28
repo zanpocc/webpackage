@@ -93,7 +93,7 @@ public final class VelocityUtils {
                 value = field.get(obj);
                 velocityContext.put(key, value);
             } catch (IllegalAccessException e) {
-                throw new BaseException("CodeGenerateDomainService.obj2VelocityContext");
+                throw new BaseException("500","CodeGenerateDomainService.obj2VelocityContext");
             }
         }
 

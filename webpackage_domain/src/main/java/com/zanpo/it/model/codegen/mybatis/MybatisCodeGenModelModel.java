@@ -58,7 +58,7 @@ public class MybatisCodeGenModelModel extends AbsCodeGenModel {
             try {
                 VelocityUtils.merge(ctx, templateFilePath, generateCodeAbsPath);
             } catch (IOException e) {
-                throw new BaseException("CodeGenerateDomainService.generate:" + e);
+                throw new BaseException("500","CodeGenerateDomainService.generate:" + e);
             }
         }
         return true;

@@ -14,12 +14,12 @@ public class FileUtils {
 
     public static File makeDirExist(File path) {
         if (path.isFile()) {
-            throw new BaseException("CodeGenerate.makeDirExist:错误路径");
+            throw new BaseException("500","CodeGenerate.makeDirExist:错误路径");
         }
         if (!path.exists()) {
             boolean mkdir = path.mkdirs();
             if (!mkdir) {
-                throw new BaseException("CodeGenerate.makeDirExist:创建目录失败:" + path.getAbsolutePath());
+                throw new BaseException("500","CodeGenerate.makeDirExist:创建目录失败:" + path.getAbsolutePath());
             }
         }
 
@@ -29,12 +29,12 @@ public class FileUtils {
     public static File makeDirExist(String path) {
         File file = new File(path);
         if (file.isFile()) {
-            throw new BaseException("CodeGenerate.makeDirExist:错误路径");
+            throw new BaseException("500","CodeGenerate.makeDirExist:错误路径");
         }
         if (!file.exists()) {
             boolean mkdir = file.mkdirs();
             if (!mkdir) {
-                throw new BaseException("CodeGenerate.makeDirExist:创建目录失败:" + file.getAbsolutePath());
+                throw new BaseException("500","CodeGenerate.makeDirExist:创建目录失败:" + file.getAbsolutePath());
             }
         }
 

@@ -68,11 +68,11 @@ public class DataBaseApp implements IDataBaseApp {
             }
         } catch (HikariPool.PoolInitializationException e) {
             if (e.getMessage().contains("Access denied")) {
-                throw new BaseException("数据库账户密码不正确");
+                throw new BaseException("500","数据库账户密码不正确");
             } else if (e.getMessage().contains("Unknown database")) {
-                throw new BaseException("数据库不存在");
+                throw new BaseException("500","数据库不存在");
             } else {
-                throw new BaseException("无法连接到数据库");
+                throw new BaseException("500","无法连接到数据库");
             }
         }
         return hikariDataSource;
@@ -197,7 +197,7 @@ public class DataBaseApp implements IDataBaseApp {
         try {
             templatePath = ResourceUtils.getURL("classpath:templates/Mapper.vm").getPath();
         } catch (FileNotFoundException e) {
-            throw new BaseException("Mapper 模板文件未找到");
+            throw new BaseException("500","Mapper 模板文件未找到");
         }
         model.setTemplateFilePath(templatePath);
         model.generate();
@@ -245,7 +245,7 @@ public class DataBaseApp implements IDataBaseApp {
         try {
             templatePath = ResourceUtils.getURL("classpath:templates/Dao.vm").getPath();
         } catch (FileNotFoundException e) {
-            throw new BaseException("Dao 模板文件未找到");
+            throw new BaseException("500","Dao 模板文件未找到");
         }
         model.setTemplateFilePath(templatePath);
         model.generate();
@@ -269,7 +269,7 @@ public class DataBaseApp implements IDataBaseApp {
         try {
             templatePath = ResourceUtils.getURL("classpath:templates/Entity.vm").getPath();
         } catch (FileNotFoundException e) {
-            throw new BaseException("Entity模板文件未找到");
+            throw new BaseException("500","Entity模板文件未找到");
         }
         model.setTemplateFilePath(templatePath);
         model.generate();

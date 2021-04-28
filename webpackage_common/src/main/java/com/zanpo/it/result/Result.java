@@ -15,31 +15,35 @@ import java.util.UUID;
 public class Result<T> {
     private String message;
     private T data;
-    private String id;
+    private String code;
     private boolean success;
 
     private Result(){}
 
-    private Result(String message, T data, String id,boolean success) {
+    private Result(String code,String message, T data,boolean success) {
+        this.code = code;
         this.message = message;
         this.data = data;
-        this.id = id;
         this.success = success;
     }
 
     public static <T> Result<T> success(T data){
-        return new Result("调用成功",data, UUID.randomUUID().toString().replace("-",""),true);
+        return new Result(ResultEnum.CALL_SUCCESS.getCode(),ResultEnum.CALL_SUCCESS.getMessage(), data,true);
     }
 
     public static <T> Result<T> failed(T data){
-        return new Result("调用失败",data, UUID.randomUUID().toString().replace("-",""),false);
+        return new Result(ResultEnum.PROGRAM_ERROR.getCode(), ResultEnum.PROGRAM_ERROR.getMessage(), data,false);
     }
 
     public static <T> Result<T> failed(){
-        return new Result("调用失败",null, UUID.randomUUID().toString().replace("-",""),false);
+        return new Result(ResultEnum.PROGRAM_ERROR.getCode(), ResultEnum.PROGRAM_ERROR.getMessage(), null,false);
     }
 
-    public static <T> Result<T> failed(String msg){
-        return new Result(msg,null, UUID.randomUUID().toString().replace("-",""),false);
+    public static <T> Result<T> failed(String code,String msg){
+        return new Result(code,msg, null,false);
+    }
+
+    public static <T> Result<T> failed(ResultEnum resultEnum){
+        return new Result(resultEnum.getCode(),resultEnum.getMessage(),null,false);
     }
 }
