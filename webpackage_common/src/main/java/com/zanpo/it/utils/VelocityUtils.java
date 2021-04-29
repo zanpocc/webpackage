@@ -19,7 +19,6 @@ import java.lang.reflect.Field;
  * @date 2020/11/4 21:39
  */
 public final class VelocityUtils {
-
     private static final VelocityEngine ve = new VelocityEngine();
 
     static {
@@ -99,5 +98,4 @@ public final class VelocityUtils {
 
         return velocityContext;
     }
-
 }

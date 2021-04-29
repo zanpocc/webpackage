@@ -1,13 +1,15 @@
 package com.zanpo.it.exception;
 
 import com.zanpo.it.result.ResultEnum;
+import lombok.Data;
 
 /**
- * 添加类说明
+ * 通用异常
  *
  * @author cg
  * @date 2020/11/3 21:57
  */
+@Data
 public class BaseException extends RuntimeException {
     private String code;
 

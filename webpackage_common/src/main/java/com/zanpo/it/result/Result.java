@@ -18,9 +18,10 @@ public class Result<T> {
     private String code;
     private boolean success;
 
-    private Result(){}
+    public Result() {
+    }
 
-    private Result(String code,String message, T data,boolean success) {
+    public Result(String code, String message, T data, boolean success) {
         this.code = code;
         this.message = message;
         this.data = data;

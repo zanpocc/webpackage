@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 添加类说明
+ * 统一异常处理
  *
  * @author cg
  * @date 2020/11/11 12:49
@@ -20,12 +20,18 @@ public class ExceptionHandle {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result handBaseException(Exception e){
-        log.error(e.getMessage());
-        if(e instanceof BaseException){
+        Result result = new Result();
+        if (e instanceof BaseException) {
             BaseException exception = (BaseException) e;
-
+            String code = exception.getCode();
+            String message = exception.getMessage();
+            result.setCode(code);
+            result.setMessage(message);
+        } else {
+            result.setCode(ResultEnum.PROGRAM_ERROR.getCode());
+            result.setMessage(ResultEnum.PROGRAM_ERROR.getMessage());
         }
 
-        return Result.failed(ResultEnum.PROGRAM_ERROR.getCode(),e.getMessage());
+        return result;
     }
 }

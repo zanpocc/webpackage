@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 添加类说明
+ * 使用JSON进行普通对象和集合对象的深拷贝
  *
  * @author cg
  * @date 2020/11/1 21:00
