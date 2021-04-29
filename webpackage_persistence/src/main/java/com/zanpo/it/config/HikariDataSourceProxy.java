@@ -24,7 +24,10 @@ public class HikariDataSourceProxy implements DataSource {
     private HikariDataSource dataSource;
 
     public Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        if (dataSource != null) {
+            return dataSource.getConnection();
+        }
+        return null;
     }
 
     public Connection getConnection(String username, String password) throws SQLException {

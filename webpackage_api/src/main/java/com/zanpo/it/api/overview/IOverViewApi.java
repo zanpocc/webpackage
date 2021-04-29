@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public interface IOverViewApi {
 
-    @ApiOperation("查询系统详细信息")
+    @ApiOperation(value = "查询系统详细信息", notes = "查询系统详细信息")
     @GetMapping("/overview/detail")
     Result<SystemInfoOutputDto> getSystemInfo();
 }

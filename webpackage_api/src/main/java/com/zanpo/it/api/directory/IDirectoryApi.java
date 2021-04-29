@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/directory")
 @RestController
 public interface IDirectoryApi {
-    @ApiOperation("列举指定目录下所有子目录")
+    @ApiOperation(value = "列举指定目录下所有子目录", notes = "列举指定目录下所有子目录")
     @GetMapping("/directory/list/")
     Result<List<PathNodeOutputDto>> getChildrenDirs(@RequestParam("path") String path);
 }

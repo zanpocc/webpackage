@@ -29,35 +29,35 @@ import java.util.List;
 @RestController
 public interface IDataBaseApi {
 
-    @ApiOperation("列举所有数据源信息")
+    @ApiOperation(value = "列举所有数据源信息", notes = "列举所有数据源信息")
     @GetMapping("/datasource/list")
     Result<List<DataSourceOutputDto>> findDataSources();
 
-    @ApiOperation("更新数据源信息")
+    @ApiOperation(value = "更新数据源信息", notes = "更新数据源信息")
     @PostMapping("/datasource/update")
     Result<String> updateDataSource(DataSourceInputDto dataSourceInputDto);
 
-    @ApiOperation("添加数据源信息")
+    @ApiOperation(value = "添加数据源信息", notes = "添加数据源信息")
     @PutMapping("/datasource/create")
     Result<DataSourceOutputDto> createDataSource(DataSourceInputDto dataSourceInputDto);
 
-    @ApiOperation("删除数据源信息")
+    @ApiOperation(value = "删除数据源信息", notes = "删除数据源信息")
     @DeleteMapping("/datasource/delete")
     Result<String> deleteDataSource(DataSourceInputDto dataSourceInputDto);
 
-    @ApiOperation("查询指定schema的所有表信息")
+    @ApiOperation(value = "查询指定schema的所有表信息", notes = "查询指定schema的所有表信息")
     @GetMapping("/table/list/{schema}")
     Result<List<TableOutputDto>> findAllTables(@PathVariable("schema") String schema);
 
-    @ApiOperation("根据外键命名规则生成外健添加SQL")
+    @ApiOperation(value = "根据外键命名规则生成外健添加SQL", notes = "根据外键命名规则生成外健添加SQL")
     @GetMapping("/table/foreign/generate/{schema}")
     Result<String> generateForeignKey(@PathVariable("schema") String schema);
 
-    @ApiOperation("生成数据库的Mybatis代码")
+    @ApiOperation(value = "生成数据库的Mybatis代码", notes = "生成数据库的Mybatis代码")
     @PostMapping("/codeGen")
     Result<String> generateCode(@RequestBody CodeGenInputDto codeGenInputDto);
 
-    @ApiOperation("查找数据库中的schema")
+    @ApiOperation(value = "查找数据库中的schema", notes = "查找数据库中的schema")
     @GetMapping("/schema/list")
     Result<List<String>> findAllSchema();
 }
