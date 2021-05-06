@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;

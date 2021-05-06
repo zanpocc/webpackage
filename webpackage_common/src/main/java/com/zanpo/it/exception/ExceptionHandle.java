@@ -28,10 +28,12 @@ public class ExceptionHandle {
             result.setCode(code);
             result.setMessage(message);
         } else {
+
             result.setCode(ResultEnum.PROGRAM_ERROR.getCode());
             result.setMessage(ResultEnum.PROGRAM_ERROR.getMessage());
         }
 
+        log.info(e.getMessage(), e);
         return result;
     }
 }
