@@ -18,10 +18,11 @@ public final class SpringUtils implements ApplicationContextAware {
     @Getter
     private static ApplicationContext applicationContext;
 
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         // 初始化时得到applicationContext对象
-        if(this.applicationContext == null){
-            this.applicationContext = applicationContext;
+        if(SpringUtils.applicationContext == null){
+            SpringUtils.applicationContext = applicationContext;
         }
     }
 

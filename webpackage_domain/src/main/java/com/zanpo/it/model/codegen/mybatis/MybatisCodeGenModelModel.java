@@ -46,6 +46,7 @@ public class MybatisCodeGenModelModel extends AbsCodeGenModel {
      *
      * @return 是否成功
      */
+    @Override
     public boolean generate(){
         // 从数据库中收集对应schema的所有表信息,map<tableName,ctx>
         Map<String, VelocityContext> ctxMap = getVelocityCtx(schema,extraParams);

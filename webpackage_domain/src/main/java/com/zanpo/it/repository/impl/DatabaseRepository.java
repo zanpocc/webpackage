@@ -37,6 +37,7 @@ public class DatabaseRepository implements IDatabaseRepository {
     @Autowired
     private IDatabaseDao dao;
 
+    @Override
     public List<TableEntity> findAllTables(String schema) {
         List<Table> allTables = dao.findAllTables(schema);
         List<TableEntity> tableEntities = CopyUtils.copyList(allTables, TableEntity.class);
@@ -53,6 +54,7 @@ public class DatabaseRepository implements IDatabaseRepository {
         return tableEntities;
     }
 
+    @Override
     public List<String> findAllSchema() {
         List<String> result = dao.findAllSchema();
         return result;

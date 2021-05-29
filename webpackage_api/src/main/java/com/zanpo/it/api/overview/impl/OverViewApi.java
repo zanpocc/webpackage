@@ -19,6 +19,7 @@ public class OverViewApi implements IOverViewApi {
     @Autowired
     IOverViewApp overViewApp;
 
+    @Override
     public Result<SystemInfoOutputDto> getSystemInfo() {
         SystemInfoOutputDto systemInfo = overViewApp.getSystemInfo();
         return Result.success(systemInfo);

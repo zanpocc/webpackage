@@ -23,6 +23,7 @@ public class HikariDataSourceProxy implements DataSource {
     @Getter
     private HikariDataSource dataSource;
 
+    @Override
     public Connection getConnection() throws SQLException {
         if (dataSource != null) {
             return dataSource.getConnection();
@@ -30,34 +31,42 @@ public class HikariDataSourceProxy implements DataSource {
         return null;
     }
 
+    @Override
     public Connection getConnection(String username, String password) throws SQLException {
         return dataSource.getConnection(username, password);
     }
 
+    @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         return dataSource.unwrap(iface);
     }
 
+    @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return dataSource.isWrapperFor(iface);
     }
 
+    @Override
     public PrintWriter getLogWriter() throws SQLException {
         return dataSource.getLogWriter();
     }
 
+    @Override
     public void setLogWriter(PrintWriter out) throws SQLException {
         dataSource.setLogWriter(out);
     }
 
+    @Override
     public void setLoginTimeout(int seconds) throws SQLException {
         dataSource.setLoginTimeout(seconds);
     }
 
+    @Override
     public int getLoginTimeout() throws SQLException {
         return dataSource.getLoginTimeout();
     }
 
+    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         return dataSource.getParentLogger();
     }

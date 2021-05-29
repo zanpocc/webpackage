@@ -15,6 +15,7 @@ import java.util.Set;
  */
 @Component
 public class OverViewApp implements IOverViewApp {
+    @Override
     public SystemInfoOutputDto getSystemInfo() {
         SystemInfoOutputDto systemInfoOutputDto = new SystemInfoOutputDto();
 
