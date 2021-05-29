@@ -11,6 +11,14 @@
     <packaging>war</packaging>
     <artifactId>webpackage_app</artifactId>
 
+    <properties>
+        <!--指定jdk版本-->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!--编译时跳过测试-->
+        <skipTests>true</skipTests>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.zanpo.it</groupId>
@@ -57,14 +65,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>7</source>
-                    <target>7</target>
-                </configuration>
             </plugin>
         </plugins>
 
