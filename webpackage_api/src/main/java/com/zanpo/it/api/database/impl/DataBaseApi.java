@@ -8,7 +8,7 @@ import com.zanpo.it.dto.database.DataSourceOutputDto;
 import com.zanpo.it.dto.database.TableOutputDto;
 import com.zanpo.it.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * @author cg
  * @date 2020/10/29 19:53
  */
-@Component
+@RestController
 public class DataBaseApi implements IDataBaseApi {
 
     @Autowired

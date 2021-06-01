@@ -5,7 +5,7 @@ import com.zanpo.it.app.overview.IOverViewApp;
 import com.zanpo.it.dto.overview.SystemInfoOutputDto;
 import com.zanpo.it.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 概览接口API层实现
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author cg
  * @date 2020/10/28 20:23
  */
-@Component
+@RestController
 public class OverViewApi implements IOverViewApi {
 
     @Autowired

@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -19,7 +18,6 @@ import java.util.List;
  */
 @Api(tags = "本地目录API")
 @RequestMapping("/directory")
-@RestController
 public interface IDirectoryApi {
     @ApiOperation(value = "列举指定目录下所有子目录", notes = "列举指定目录下所有子目录")
     @GetMapping("/directory/list/")

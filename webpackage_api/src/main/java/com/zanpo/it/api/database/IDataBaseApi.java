@@ -26,7 +26,6 @@ import java.util.List;
  */
 @Api(tags = "数据库接口API")
 @RequestMapping("/database")
-@RestController
 public interface IDataBaseApi {
 
     @ApiOperation(value = "列举所有数据源信息", notes = "列举所有数据源信息")
