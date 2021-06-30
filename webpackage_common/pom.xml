@@ -18,4 +18,17 @@
         <!--编译时跳过测试-->
         <skipTests>true</skipTests>
     </properties>
+
+    <build>
+        <!--指定资源文件路径-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

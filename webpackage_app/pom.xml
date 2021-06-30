@@ -68,12 +68,12 @@
             </plugin>
         </plugins>
 
-        <!--        打包资源文件到类目录下-->
+        <!--指定资源文件路径-->
         <resources>
             <resource>
-                <directory>src/main/java</directory>
+                <directory>src/main/resources</directory>
                 <includes>
-                    <include>**/*.vm</include>
+                    <include>**/*.*</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>

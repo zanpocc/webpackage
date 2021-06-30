@@ -53,17 +53,21 @@ public class DataBaseApp implements IDataBaseApp {
         hikariConfig.setJdbcUrl(url);
         hikariConfig.setUsername(dataSourceInputDto.getUser());
         hikariConfig.setPassword(dataSourceInputDto.getPassword());
-        hikariConfig.addDataSourceProperty("cachePrepStmts", true); //是否自定义配置，为true时下面两个参数才生效
+        //是否自定义配置，为true时下面两个参数才生效
+        hikariConfig.addDataSourceProperty("cachePrepStmts", true);
         hikariConfig.setMaximumPoolSize(5);
         hikariConfig.setMinimumIdle(300000);
         hikariConfig.setIdleTimeout(600000);
         hikariConfig.setMaxLifetime(3000);
-        hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", 2048); //单条语句最大长度默认256，官方推荐2048
+        //单条语句最大长度默认256，官方推荐2048
+        hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
         HikariDataSource hikariDataSource = null;
         try {
             hikariDataSource = new HikariDataSource(hikariConfig);
-            DataSource dataSource = SpringUtils.getBean(DataSource.class); // springComponent 是自己封装的spring 工具类，便于从 IOC 容器中获取Bean， 这里获取到初始化加载的DataSource Bean，
-            if (dataSource instanceof HikariDataSourceProxy) { // 实际上是 HikariDataSourceProxy 类
+            // springComponent 是自己封装的spring 工具类，便于从 IOC 容器中获取Bean， 这里获取到初始化加载的DataSource Bean，
+            DataSource dataSource = SpringUtils.getBean(DataSource.class);
+            // 实际上是 HikariDataSourceProxy 类
+            if (dataSource instanceof HikariDataSourceProxy) {
                 HikariDataSourceProxy hikariDataSourceProxy = (HikariDataSourceProxy) dataSource;
                 hikariDataSourceProxy.setDataSource(hikariDataSource);
             }
